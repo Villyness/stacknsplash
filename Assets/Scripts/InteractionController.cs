@@ -15,30 +15,43 @@ public class InteractionController : MonoBehaviour
     Vector3[] pos;
     RaycastHit hit;
     float releasetimer;
+    public float MoveSpeed;
+    public float ShapeMinDistance;
+    public float ShapeMaxDistance;
     public bool Grabbing;
+    public float ShapeZPosOffset;
+    public bool TooCloseOrFar;
     // Start is called before the first frame update
     void Start()
     {
         Beam = this.gameObject.GetComponent<LineRenderer>();
-        Beam.startWidth = 0.1f;
-        Beam.endWidth = 0.1f;
+        Beam.startWidth = 0.01f;
+        Beam.endWidth = 0.01f;
     }
 
     
     private void FixedUpdate()
     {
 
-        if (Grabbing != true) { DrawLines(); }
+        if (Grabbing != true) { DrawLines(); } //show where the controllers are pointing 
 
         
-        if (Grabbing == true && Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Reach))
+        if (Grabbing == true && Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Reach))     //checks if the raycast from controller to childed object 
         {
             pos = new Vector3[] { transform.position, hit.transform.position };              //start pos from controller and hit pos put in an array
             Beam.SetPositions(pos);                                                                         //setting the positions of the line renderer
             Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
-            //  Debug.DrawLine(transform.position, hit.transform.position);
             Debug.Log("Did Hit");
             Beam.material.color = Color.green;
+
+       
+            if (hit.distance > ShapeMinDistance && hit.distance < ShapeMaxDistance)
+            {
+                //pulling the shape closer depending on the shape offset (that gets changed in the button controler script)
+                hit.transform.position = hit.transform.position + 
+                    (transform.TransformDirection(Vector3.forward * ShapeZPosOffset) * Time.deltaTime * MoveSpeed);                 
+            }
+           
 
             if (hit.collider.tag == "Interactable")
             {
