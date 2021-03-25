@@ -14,12 +14,15 @@ public class InteractionController : MonoBehaviour
     LineRenderer Beam;
     Vector3[] pos;
     RaycastHit hit;
-    float releasetimer;
+    public float releasetimer;
+    public float MaxReleaseForce;
+    public float ForceIncreaseSpeed;
+    float releaseforce;
     public float MoveSpeed;
     public float ShapeMinDistance;
     public float ShapeMaxDistance;
     public bool Grabbing;
-    public float ShapeZPosOffset;
+    public float ShapePos;
     public bool TooCloseOrFar;
     // Start is called before the first frame update
     void Start()
@@ -42,14 +45,23 @@ public class InteractionController : MonoBehaviour
             Beam.SetPositions(pos);                                                                         //setting the positions of the line renderer
             Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
             Debug.Log("Did Hit");
+            
             Beam.material.color = Color.green;
 
-       
-            if (hit.distance > ShapeMinDistance && hit.distance < ShapeMaxDistance)
+
+            if (hit.distance > ShapeMinDistance)
             {
                 //pulling the shape closer depending on the shape offset (that gets changed in the button controler script)
-                hit.transform.position = hit.transform.position + 
-                    (transform.TransformDirection(Vector3.forward * ShapeZPosOffset) * Time.deltaTime * MoveSpeed);                 
+                hit.transform.position = hit.transform.position +
+                    (transform.TransformDirection(Vector3.back) * Time.deltaTime * MoveSpeed);
+            }
+            else
+            {
+                if (releaseforce < MaxReleaseForce)
+                {
+                    releaseforce = releaseforce + ForceIncreaseSpeed;
+                }
+                    
             }
            
 
@@ -85,6 +97,8 @@ public class InteractionController : MonoBehaviour
         hit.rigidbody.isKinematic = false;
         transform.DetachChildren();
         pickedUpFirstTime = false;
-        releasetimer = 0;
+
+        hit.rigidbody.AddForce(transform.TransformDirection(Vector3.forward * releaseforce));
     }
+                   
 }

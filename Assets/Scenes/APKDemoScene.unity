@@ -1051,7 +1051,7 @@ PrefabInstance:
     - target: {fileID: 4466952347785913672, guid: 7065fc029ed5195478e2b2d3462ccd07,
         type: 3}
       propertyPath: MoveSpeed
-      value: 10
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4466952347785913672, guid: 7065fc029ed5195478e2b2d3462ccd07,
         type: 3}
@@ -1062,6 +1062,16 @@ PrefabInstance:
         type: 3}
       propertyPath: ShapeMaxDistance
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4466952347785913672, guid: 7065fc029ed5195478e2b2d3462ccd07,
+        type: 3}
+      propertyPath: MaxReleaseForce
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4466952347785913672, guid: 7065fc029ed5195478e2b2d3462ccd07,
+        type: 3}
+      propertyPath: ForceIncreaseSpeed
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4466952347641023935, guid: 7065fc029ed5195478e2b2d3462ccd07,
         type: 3}
@@ -1076,7 +1086,7 @@ PrefabInstance:
     - target: {fileID: 4466952347641023904, guid: 7065fc029ed5195478e2b2d3462ccd07,
         type: 3}
       propertyPath: MoveSpeed
-      value: 4
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4466952347641023904, guid: 7065fc029ed5195478e2b2d3462ccd07,
         type: 3}
@@ -1087,6 +1097,16 @@ PrefabInstance:
         type: 3}
       propertyPath: ShapeMaxDistance
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4466952347641023904, guid: 7065fc029ed5195478e2b2d3462ccd07,
+        type: 3}
+      propertyPath: MaxReleaseForce
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 4466952347641023904, guid: 7065fc029ed5195478e2b2d3462ccd07,
+        type: 3}
+      propertyPath: ForceIncreaseSpeed
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7065fc029ed5195478e2b2d3462ccd07, type: 3}

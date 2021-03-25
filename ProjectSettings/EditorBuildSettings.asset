@@ -5,7 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/GrabTest.unity
     guid: 759226e494b2b1945b4035b299fe7b8f
+  - enabled: 1
+    path: Assets/Scenes/APKDemoScene.unity
+    guid: 106a34b967ca9be4897717cbf2ba47c9
   m_configObjects: {}
