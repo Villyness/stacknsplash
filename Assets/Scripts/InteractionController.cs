@@ -14,16 +14,17 @@ public class InteractionController : MonoBehaviour
     LineRenderer Beam;
     Vector3[] pos;
     RaycastHit hit;
-    public float releasetimer;
     public float MaxReleaseForce;
     public float ForceIncreaseSpeed;
     float releaseforce;
     public float MoveSpeed;
     public float ShapeMinDistance;
-    public float ShapeMaxDistance;
     public bool Grabbing;
-    public float ShapePos;
-    public bool TooCloseOrFar;
+
+    //for debugging
+    public GameObject holdingShape;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -39,42 +40,43 @@ public class InteractionController : MonoBehaviour
         if (Grabbing != true) { DrawLines(); } //show where the controllers are pointing 
 
         
-        if (Grabbing == true && Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Reach))     //checks if the raycast from controller to childed object 
+        if ( Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Reach))     //checks if the raycast from controller to childed object 
         {
-            pos = new Vector3[] { transform.position, hit.transform.position };              //start pos from controller and hit pos put in an array
-            Beam.SetPositions(pos);                                                                         //setting the positions of the line renderer
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
-            Debug.Log("Did Hit");
-            
-            Beam.material.color = Color.green;
-
-
-            if (hit.distance > ShapeMinDistance)
+            if (hit.collider.CompareTag("Interactable") == true && Grabbing == true)
             {
-                //pulling the shape closer depending on the shape offset (that gets changed in the button controler script)
-                hit.transform.position = hit.transform.position +
-                    (transform.TransformDirection(Vector3.back) * Time.deltaTime * MoveSpeed);
-            }
-            else
-            {
-                if (releaseforce < MaxReleaseForce)
-                {
-                    releaseforce = releaseforce + ForceIncreaseSpeed;
-                }
-                    
-            }
-           
 
-            if (hit.collider.tag == "Interactable")
-            {
+                pos = new Vector3[] { transform.position, hit.transform.position };              //start pos from controller and hit pos put in an array
+                Beam.SetPositions(pos);                                                                         //setting the positions of the line renderer
+                Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
+                print("grabbing something");
+
+                Beam.material.color = Color.green;
+
                 if (pickedUpFirstTime != true)
                 {
                     ChildObject();
                     pickedUpFirstTime = true;
                 }
+
+                if (hit.distance > ShapeMinDistance)
+                {
+                    //pulling the shape closer depending on the shape offset (that gets changed in the button controler script)
+                    hit.transform.position = hit.transform.position +
+                        (transform.TransformDirection(Vector3.back) * Time.deltaTime * MoveSpeed);
+                }
+                else
+                {
+                    if (releaseforce < MaxReleaseForce)
+                    {
+                        releaseforce = releaseforce + ForceIncreaseSpeed;
+                    }
+
+                }
             }
+            else if (hit.collider.CompareTag("floor")) { DrawLines(); }
         }
 
+       holdingShape = hit.transform.gameObject;
     }
 
     void DrawLines()
