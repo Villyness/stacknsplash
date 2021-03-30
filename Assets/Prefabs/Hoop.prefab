@@ -106,6 +106,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HD: {fileID: 0}
+  GM: {fileID: 0}
 --- !u!1 &6359961803071183630
 GameObject:
   m_ObjectHideFlags: 0
@@ -118,6 +119,7 @@ GameObject:
   - component: {fileID: 6359961803071183616}
   - component: {fileID: 6359961803071183631}
   - component: {fileID: 1565421488}
+  - component: {fileID: 6359961804155818010}
   m_Layer: 0
   m_Name: Hoop
   m_TagString: Untagged
@@ -134,7 +136,7 @@ Transform:
   m_GameObject: {fileID: 6359961803071183630}
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: -4.84, y: 3.7650695, z: 9.1}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalScale: {x: 10, y: 10, z: 10.000011}
   m_Children:
   - {fileID: 8316806784015346680}
   - {fileID: 2136375471}
@@ -225,6 +227,19 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &6359961804155818010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6359961803071183630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1689473416f2cf49850b1f06d5075eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerPlatform: {fileID: 0}
 --- !u!1001 &6359961802182709079
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -292,46 +307,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3109775282645361798, guid: eba3fdf5935f22a478f617d609b1ebd9,
-        type: 3}
-      propertyPath: InitialModule.startColor.maxGradient.key0.r
-      value: 0.20392159
-      objectReference: {fileID: 0}
-    - target: {fileID: 3109775282645361798, guid: eba3fdf5935f22a478f617d609b1ebd9,
-        type: 3}
-      propertyPath: InitialModule.startColor.maxGradient.key0.g
-      value: 0.4901961
-      objectReference: {fileID: 0}
-    - target: {fileID: 3109775282645361798, guid: eba3fdf5935f22a478f617d609b1ebd9,
-        type: 3}
-      propertyPath: InitialModule.startColor.maxGradient.key0.b
-      value: 0.15686275
-      objectReference: {fileID: 0}
-    - target: {fileID: 3109775282645361798, guid: eba3fdf5935f22a478f617d609b1ebd9,
-        type: 3}
-      propertyPath: InitialModule.startColor.maxGradient.key1.r
-      value: 0.20392159
-      objectReference: {fileID: 0}
-    - target: {fileID: 3109775282645361798, guid: eba3fdf5935f22a478f617d609b1ebd9,
-        type: 3}
-      propertyPath: InitialModule.startColor.maxGradient.key1.g
-      value: 0.4901961
-      objectReference: {fileID: 0}
-    - target: {fileID: 3109775282645361798, guid: eba3fdf5935f22a478f617d609b1ebd9,
-        type: 3}
-      propertyPath: InitialModule.startColor.maxGradient.key1.b
-      value: 0.15686275
-      objectReference: {fileID: 0}
-    - target: {fileID: 3109775282645361798, guid: eba3fdf5935f22a478f617d609b1ebd9,
-        type: 3}
-      propertyPath: InitialModule.maxNumParticles
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 3109775282645361798, guid: eba3fdf5935f22a478f617d609b1ebd9,
-        type: 3}
-      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.scalar
-      value: 30
-      objectReference: {fileID: 0}
     - target: {fileID: 5296095489761806369, guid: eba3fdf5935f22a478f617d609b1ebd9,
         type: 3}
       propertyPath: InitialModule.startColor.maxGradient.key0.r
@@ -371,6 +346,46 @@ PrefabInstance:
         type: 3}
       propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.scalar
       value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 3109775282645361798, guid: eba3fdf5935f22a478f617d609b1ebd9,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxGradient.key0.r
+      value: 0.20392159
+      objectReference: {fileID: 0}
+    - target: {fileID: 3109775282645361798, guid: eba3fdf5935f22a478f617d609b1ebd9,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxGradient.key0.g
+      value: 0.4901961
+      objectReference: {fileID: 0}
+    - target: {fileID: 3109775282645361798, guid: eba3fdf5935f22a478f617d609b1ebd9,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxGradient.key0.b
+      value: 0.15686275
+      objectReference: {fileID: 0}
+    - target: {fileID: 3109775282645361798, guid: eba3fdf5935f22a478f617d609b1ebd9,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxGradient.key1.r
+      value: 0.20392159
+      objectReference: {fileID: 0}
+    - target: {fileID: 3109775282645361798, guid: eba3fdf5935f22a478f617d609b1ebd9,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxGradient.key1.g
+      value: 0.4901961
+      objectReference: {fileID: 0}
+    - target: {fileID: 3109775282645361798, guid: eba3fdf5935f22a478f617d609b1ebd9,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxGradient.key1.b
+      value: 0.15686275
+      objectReference: {fileID: 0}
+    - target: {fileID: 3109775282645361798, guid: eba3fdf5935f22a478f617d609b1ebd9,
+        type: 3}
+      propertyPath: InitialModule.maxNumParticles
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3109775282645361798, guid: eba3fdf5935f22a478f617d609b1ebd9,
+        type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.scalar
+      value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eba3fdf5935f22a478f617d609b1ebd9, type: 3}
