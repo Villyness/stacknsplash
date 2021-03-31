@@ -20,6 +20,7 @@ public class InteractionController : MonoBehaviour
     public float MoveSpeed;
     public float ShapeMinDistance;
     public bool Grabbing;
+    public bool PointingAtInteractable = false;
 
     //for debugging
     public GameObject holdingShape;
@@ -37,46 +38,49 @@ public class InteractionController : MonoBehaviour
     private void FixedUpdate()
     {
 
-        if (Grabbing != true) { DrawLines(); } //show where the controllers are pointing 
-
-        
-        if ( Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Reach))     //checks if the raycast from controller to childed object 
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Reach))    //checks if raycast hits anything
         {
-            if (hit.collider.CompareTag("Interactable") == true && Grabbing == true)
+            if (hit.collider.CompareTag("Interactable")) { PointingAtInteractable = true; }
+           
+            if (PointingAtInteractable == false) { DrawLines(); Grabbing = false; }
+        }
+        else { DrawLines(); PointingAtInteractable = false; Grabbing = false; }
+        
+        if (PointingAtInteractable && Grabbing)
+        {
+
+            pos = new Vector3[] { transform.position, hit.transform.position };              //start pos from controller and hit pos put in an array
+            Beam.SetPositions(pos);
+            //setting the positions of the line renderer
+
+            //Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
+            print("grabbing something");
+
+            Beam.material.color = Color.green;
+
+            if (pickedUpFirstTime != true)
             {
-
-                pos = new Vector3[] { transform.position, hit.transform.position };              //start pos from controller and hit pos put in an array
-                Beam.SetPositions(pos);                                                                         //setting the positions of the line renderer
-                Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
-                print("grabbing something");
-
-                Beam.material.color = Color.green;
-
-                if (pickedUpFirstTime != true)
-                {
-                    ChildObject();
-                    pickedUpFirstTime = true;
-                }
-
-                if (hit.distance > ShapeMinDistance)
-                {
-                    //pulling the shape closer depending on the shape offset (that gets changed in the button controler script)
-                    hit.transform.position = hit.transform.position +
-                        (transform.TransformDirection(Vector3.back) * Time.deltaTime * MoveSpeed);
-                }
-                else
-                {
-                    if (releaseforce < MaxReleaseForce)
-                    {
-                        releaseforce = releaseforce + ForceIncreaseSpeed;
-                    }
-
-                }
+                ChildObject();
+                pickedUpFirstTime = true;
             }
-            else if (hit.collider.CompareTag("floor")) { DrawLines(); }
+
+            if (hit.distance > ShapeMinDistance)
+            {
+                //pulling the shape closer depending on the shape offset (that gets changed in the button controler script)
+                hit.transform.position = hit.transform.position +
+                    (transform.TransformDirection(Vector3.back) * Time.deltaTime * MoveSpeed);
+            }
+            else
+            {
+                if (releaseforce < MaxReleaseForce)
+                {
+                    releaseforce = releaseforce + ForceIncreaseSpeed;
+                }
+
+            }
         }
 
-       holdingShape = hit.transform.gameObject;
+        holdingShape = hit.transform.gameObject;
     }
 
     void DrawLines()

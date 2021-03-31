@@ -10,7 +10,7 @@ public class LeftButtonController : MonoBehaviour
     {
         //JoystickInput = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick);
        // if (PController.Grabbing == true) { PController.ShapeZPosOffset = JoystickInput.y; }
-        if (OVRInput.GetDown(OVRInput.RawButton.LIndexTrigger)) { PController.Grabbing = true; }
+        if (OVRInput.GetDown(OVRInput.RawButton.LIndexTrigger)) if (PController.PointingAtInteractable) PController.Grabbing = true;
         if (OVRInput.GetUp(OVRInput.RawButton.LIndexTrigger)) { PController.Release(); PController.Grabbing = false; }
     }
 }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4466952347785913671}
   - component: {fileID: 4466952347785913672}
   - component: {fileID: 4466952347785913670}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: LeftControllerAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -141,11 +141,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Reach: 30
-  MaxReleaseForce: 100
+  MaxReleaseForce: 1000
   ForceIncreaseSpeed: 10
   MoveSpeed: 8
   ShapeMinDistance: 1
   Grabbing: 0
+  PointingAtInteractable: 0
   holdingShape: {fileID: 0}
 --- !u!114 &4466952347785913670
 MonoBehaviour:
@@ -169,7 +170,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4466952347254279501}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: RightHandAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -200,7 +201,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4466952347254265395}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: TrackingSpace
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -236,7 +237,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4466952347254265397}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: TrackerAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -266,7 +267,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4466952347254283555}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: LeftHandAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -300,7 +301,7 @@ GameObject:
   - component: {fileID: 4466952347244489109}
   - component: {fileID: 4466952347244489091}
   - component: {fileID: 4353340051905248293}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: OVRCameraRig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -580,7 +581,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4466952347254325323}
   - component: {fileID: 4447946771247201599}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: LeftEyeAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -656,7 +657,7 @@ GameObject:
   - component: {fileID: 4466952347256128097}
   - component: {fileID: 4466952347253856977}
   - component: {fileID: 4466952347244377843}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: CenterEyeAnchor
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -754,7 +755,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4466952347254325327}
   - component: {fileID: 4446483970574864849}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: RightEyeAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -830,7 +831,7 @@ GameObject:
   - component: {fileID: 4466952347641023935}
   - component: {fileID: 4466952347641023904}
   - component: {fileID: 4466952347641023934}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: RightControllerAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -964,6 +965,7 @@ MonoBehaviour:
   MoveSpeed: 8
   ShapeMinDistance: 1
   Grabbing: 0
+  PointingAtInteractable: 0
   holdingShape: {fileID: 0}
 --- !u!114 &4466952347641023934
 MonoBehaviour:
