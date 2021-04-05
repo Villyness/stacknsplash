@@ -16,7 +16,7 @@ public class InteractionController : MonoBehaviour
     RaycastHit hit;
     public float MaxReleaseForce;
     public float ForceIncreaseSpeed;
-    float releaseforce;
+    public float releaseforce;
     public float MoveSpeed;
     public float ShapeMinDistance;
     public bool Grabbing;
