@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2136375469}
   - component: {fileID: 2136375468}
   - component: {fileID: 2136375472}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: InsideCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121,7 +121,7 @@ GameObject:
   - component: {fileID: 1565421488}
   - component: {fileID: 6359961804155818010}
   - component: {fileID: 1477348553}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Hoop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -242,6 +242,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerPlatform: {fileID: 0}
   HoopVelocity: -20
+  DirectionChange: 1
+  Range: 3
+  changetimer: 5
+  changedFirstTime: 0
 --- !u!64 &1477348553
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -267,6 +271,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Happy Explosion
+      objectReference: {fileID: 0}
+    - target: {fileID: 3109775282671477933, guid: eba3fdf5935f22a478f617d609b1ebd9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3109775282671477935, guid: eba3fdf5935f22a478f617d609b1ebd9,
         type: 3}
@@ -322,6 +331,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5296095489761806368, guid: eba3fdf5935f22a478f617d609b1ebd9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3109775282645361799, guid: eba3fdf5935f22a478f617d609b1ebd9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5296095489761806369, guid: eba3fdf5935f22a478f617d609b1ebd9,
         type: 3}

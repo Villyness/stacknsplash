@@ -424,7 +424,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4466952347254325315}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: ForwardDirection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -459,7 +459,7 @@ GameObject:
   - component: {fileID: 4466952347244428745}
   - component: {fileID: 4466952347244329111}
   - component: {fileID: 4466952346942652755}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: OVRPlayerController
   m_TagString: Untagged
   m_Icon: {fileID: 0}

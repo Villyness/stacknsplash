@@ -21,9 +21,11 @@ public class InteractionController : MonoBehaviour
     public float ShapeMinDistance;
     public bool Grabbing;
     public bool PointingAtInteractable = false;
+    public bool HoldingShape;
+    bool release;
 
     //for debugging
-    public GameObject holdingShape;
+    public GameObject holdingShapeObject;
 
 
     // Start is called before the first frame update
@@ -34,23 +36,24 @@ public class InteractionController : MonoBehaviour
         Beam.endWidth = 0.01f;
     }
 
-    
+
     private void FixedUpdate()
     {
-
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Reach))    //checks if raycast hits anything
-        {
-            if (hit.collider.CompareTag("Interactable")) { PointingAtInteractable = true; }
-           
-            if (PointingAtInteractable == false) { DrawLines(); Grabbing = false; }
-        }
-        else { DrawLines(); PointingAtInteractable = false; Grabbing = false; }
         
-        if (PointingAtInteractable && Grabbing)
+            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Reach))    //checks if raycast hits anything
+            {
+                if (hit.collider.CompareTag("Interactable")) { PointingAtInteractable = true; }
+                else { PointingAtInteractable = false;  }
+          
+            //if (PointingAtInteractable == false) { DrawLines(); Grabbing = false; }
+            }
+            else { PointingAtInteractable = false; }
+ 
+        if (HoldingShape)
         {
 
             pos = new Vector3[] { transform.position, hit.transform.position };              //start pos from controller and hit pos put in an array
-            Beam.SetPositions(pos);
+            holdingShapeObject = hit.transform.gameObject;
             //setting the positions of the line renderer
 
             //Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
@@ -79,13 +82,18 @@ public class InteractionController : MonoBehaviour
 
             }
         }
-
-        holdingShape = hit.transform.gameObject;
+        else { pos = new Vector3[] { transform.position, transform.TransformDirection(Vector3.forward) * Reach }; }
+    }
+    private void Update()
+    {
+        if (PointingAtInteractable && Grabbing) { HoldingShape = true; release = false; }
+        else { HoldingShape = false; }
+        if (Grabbing == false && release == false) { Release(); release = true; }
+        DrawLines();
     }
 
     void DrawLines()
     {
-        pos = new Vector3[] { transform.position, transform.TransformDirection(Vector3.forward) * Reach };
         Beam.SetPositions(pos);
     }
 
