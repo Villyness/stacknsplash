@@ -87,10 +87,10 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2136375467}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 14
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!114 &2136375472
@@ -105,7 +105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59eb960eed0e1fb4abe78cb705bdb44a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HD: {fileID: 0}
+  HD: {fileID: 1565421488}
   GM: {fileID: 0}
 --- !u!1 &6359961803071183630
 GameObject:
@@ -342,6 +342,16 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 3109775282671477932, guid: eba3fdf5935f22a478f617d609b1ebd9,
+        type: 3}
+      propertyPath: OutPartSystemObject
+      value: 
+      objectReference: {fileID: 1242040606044866423}
+    - target: {fileID: 3109775282671477932, guid: eba3fdf5935f22a478f617d609b1ebd9,
+        type: 3}
+      propertyPath: UpPartSystemObject
+      value: 
+      objectReference: {fileID: 8316806783993293776}
     - target: {fileID: 5296095489761806369, guid: eba3fdf5935f22a478f617d609b1ebd9,
         type: 3}
       propertyPath: InitialModule.startColor.maxGradient.key0.r
@@ -427,6 +437,18 @@ PrefabInstance:
 --- !u!4 &8316806784015346680 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3109775282671477935, guid: eba3fdf5935f22a478f617d609b1ebd9,
+    type: 3}
+  m_PrefabInstance: {fileID: 6359961802182709079}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1242040606044866423 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5296095489761806368, guid: eba3fdf5935f22a478f617d609b1ebd9,
+    type: 3}
+  m_PrefabInstance: {fileID: 6359961802182709079}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8316806783993293776 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3109775282645361799, guid: eba3fdf5935f22a478f617d609b1ebd9,
     type: 3}
   m_PrefabInstance: {fileID: 6359961802182709079}
   m_PrefabAsset: {fileID: 0}

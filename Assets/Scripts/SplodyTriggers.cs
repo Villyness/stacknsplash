@@ -4,30 +4,32 @@ using UnityEngine;
 
 public class SplodyTriggers : MonoBehaviour
 {
-    GameObject OutPartSystemObject;
+    //public GameObject OutPartSystemObject;
 
-    GameObject UpPartSystemObject;
+   // public GameObject UpPartSystemObject;
 
-    ParticleSystem UpPartSystem;
+    public ParticleSystem UpPartSystem;
 
-    ParticleSystem OutPartSystem;
+    public ParticleSystem OutPartSystem;
 
     GameObject Shape;
 
     MeshRenderer ShapeRenderer;
    
 
-    private void Start()
+    private void Awake()
     {
-        OutPartSystemObject = transform.GetChild(0).gameObject;
-        OutPartSystem = OutPartSystemObject.GetComponent<ParticleSystem>();
+        //OutPartSystemObject = transform.GetChild(0).gameObject;
+        //if(!OutPartSystemObject) print("hello");
+       // OutPartSystem = OutPartSystemObject.GetComponent<ParticleSystem>();
 
-        UpPartSystemObject = transform.GetChild(1).gameObject;
-        UpPartSystem = UpPartSystemObject.GetComponent<ParticleSystem>();
+        ///UpPartSystemObject = transform.GetChild(1).gameObject;
+       // UpPartSystem = UpPartSystemObject.GetComponent<ParticleSystem>();
 
         Shape = transform.parent.gameObject;
-        ShapeRenderer = Shape.GetComponent<MeshRenderer>();        
+        ShapeRenderer = Shape.GetComponent<MeshRenderer>();
     }
+
     public IEnumerator PartyExplosion()
     {
         ShapeRenderer.enabled = false;

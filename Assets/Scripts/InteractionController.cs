@@ -4,16 +4,20 @@ using UnityEngine;
 
 public class InteractionController : MonoBehaviour
 {
+
     /// <summary>
     /// the distance the player can grab objects
     /// </summary>
     public float Reach;
+    public ShapeSpawner ShapespawnerScript;
     // Update is called once per frame
 
     bool pickedUpFirstTime = false;
-    LineRenderer Beam;
-    Vector3[] pos;
-    RaycastHit hit;
+    public LineRenderer Beam;
+    public Vector3[] pos;
+    GameObject Currentobject;
+    Rigidbody ObjectRB;
+
     public float MaxReleaseForce;
     public float ForceIncreaseSpeed;
     public float releaseforce;
@@ -22,7 +26,13 @@ public class InteractionController : MonoBehaviour
     public bool Grabbing;
     public bool PointingAtInteractable = false;
     public bool HoldingShape;
+
+    public int Ammo;
+    public bool Aiming;
     bool release;
+
+    RaycastHit hit;
+
 
     //for debugging
     public GameObject holdingShapeObject;
@@ -31,64 +41,28 @@ public class InteractionController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Ammo = 7;
         Beam = this.gameObject.GetComponent<LineRenderer>();
         Beam.startWidth = 0.01f;
         Beam.endWidth = 0.01f;
+        DrawLines();
+ 
     }
 
 
     private void FixedUpdate()
     {
-        
-            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Reach))    //checks if raycast hits anything
-            {
-                if (hit.collider.CompareTag("Interactable")) { PointingAtInteractable = true; }
-                else { PointingAtInteractable = false;  }
-          
-            //if (PointingAtInteractable == false) { DrawLines(); Grabbing = false; }
-            }
-            else { PointingAtInteractable = false; }
- 
-        if (HoldingShape)
+
+        if (releaseforce < MaxReleaseForce)
         {
-
-            pos = new Vector3[] { transform.position, hit.transform.position };              //start pos from controller and hit pos put in an array
-            holdingShapeObject = hit.transform.gameObject;
-            //setting the positions of the line renderer
-
-            //Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
-            print("grabbing something");
-
-            Beam.material.color = Color.green;
-
-            if (pickedUpFirstTime != true)
-            {
-                ChildObject();
-                pickedUpFirstTime = true;
-            }
-
-            if (hit.distance > ShapeMinDistance)
-            {
-                //pulling the shape closer depending on the shape offset (that gets changed in the button controler script)
-                hit.transform.position = hit.transform.position +
-                    (transform.TransformDirection(Vector3.back) * Time.deltaTime * MoveSpeed);
-            }
-            else
-            {
-                if (releaseforce < MaxReleaseForce)
-                {
-                    releaseforce = releaseforce + ForceIncreaseSpeed;
-                }
-
-            }
+            releaseforce = releaseforce + ForceIncreaseSpeed;
         }
-        else { pos = new Vector3[] { transform.position, transform.TransformDirection(Vector3.forward) * Reach }; }
+        pos = new Vector3[] { transform.position, transform.position + transform.forward };
+        holdingShapeObject = ShapespawnerScript.AmmoSingleBannana;
+
     }
     private void Update()
-    {
-        if (PointingAtInteractable && Grabbing) { HoldingShape = true; release = false; }
-        else { HoldingShape = false; }
-        if (Grabbing == false && release == false) { Release(); release = true; }
+  {       
         DrawLines();
     }
 
@@ -97,22 +71,30 @@ public class InteractionController : MonoBehaviour
         Beam.SetPositions(pos);
     }
 
-    void ChildObject() //turning off most phyisics for the shape when its childed
+    public void ChildObject(GameObject a) //turning off most phyisics for the shape when its childed
     {
-        hit.rigidbody.velocity = Vector3.zero;
-        hit.transform.parent = this.transform;
-        hit.rigidbody.useGravity = false;
-        hit.rigidbody.isKinematic = true;
+        Rigidbody rb = a.GetComponent<Rigidbody>();
+        rb.velocity = Vector3.zero;
+        rb.transform.parent = this.transform;
+        rb.useGravity = false;
+        rb.isKinematic = true;
+        a = holdingShapeObject;
     }
 
-    public void Release() //releasing the shape (gets called in the trigger release scripts)
+    public void Release(GameObject a) //releasing the shape (gets called in the trigger release scripts)
     {
-        hit.rigidbody.useGravity = true;
-        hit.rigidbody.isKinematic = false;
-        transform.DetachChildren();
-        pickedUpFirstTime = false;
-
-        hit.rigidbody.AddForce(transform.TransformDirection(Vector3.forward * releaseforce));
+        Ammo--;
+        Rigidbody rb = a.GetComponent<Rigidbody>();
+        rb.useGravity = true;
+        rb.isKinematic = false;
+       // this.transform.DetachChildren();
+        // pickedUpFirstTime = false;
+        rb.AddForce(transform.TransformDirection(Vector3.forward * releaseforce));
+        releaseforce = 0;
+       // ShapespawnerScript.NewShape();
+        print("release");
     }
-                   
+
+
+
 }

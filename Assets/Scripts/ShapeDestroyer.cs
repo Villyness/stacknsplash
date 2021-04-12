@@ -9,6 +9,11 @@ public class ShapeDestroyer : MonoBehaviour
     float shapedistance;
     bool TooFar;
 
+    private void Start()
+    {
+        Player = GameObject.Find("PlayerController");
+    }
+
     private void FixedUpdate()
     {
         shapedistance = Vector3.Distance(Player.transform.position, this.transform.position);
