@@ -6,38 +6,20 @@ public class HoopMovement : MonoBehaviour
 {
     public GameObject PlayerPlatform;
     public float HoopVelocity;
-    public bool DirectionChange = false;
     public float Range;
     public float changetimer;
     public bool changedFirstTime = false;
     // Update is called once per frame
     private void Start()
     {
-        
+        PlayerPlatform = GameObject.FindGameObjectWithTag("PlayerPlatform");
+        if (Random.value < 0.5f) { HoopVelocity = Random.Range(-20, -10); }
+        else { HoopVelocity = Random.Range(10, 20); }
     }
     void Update()
     {
-        transform.RotateAround(PlayerPlatform.transform.position, Vector3.up, HoopVelocity * Time.deltaTime);
-
-        if (DirectionChange == false) { changetimer += 1 *Time.deltaTime; }
-        
-        if (changetimer > Range || changedFirstTime == false && changetimer*2 > Range)
-        {
-            changedFirstTime = true;
-            DirectionChange = true;
-            ChangeDirection();
-            changetimer = 0;
-        }
-        else
-        {
-            DirectionChange = false;
-        }
-        
-   
+        transform.RotateAround(PlayerPlatform.transform.position, Vector3.up, HoopVelocity * Time.deltaTime);   
     }
 
-    void ChangeDirection()
-    {
-        HoopVelocity *= -1;
-    }
+
 }

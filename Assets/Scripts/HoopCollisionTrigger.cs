@@ -14,6 +14,7 @@ public class HoopCollisionTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        print("hit");
         HD.disapear = true;
         GM.GameScore++;
     }

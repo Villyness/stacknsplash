@@ -10,6 +10,7 @@ public class InteractionController : MonoBehaviour
     /// </summary>
     public float Reach;
     public ShapeSpawner ShapespawnerScript;
+    AudioSource AudioS;
     // Update is called once per frame
 
     bool pickedUpFirstTime = false;
@@ -30,9 +31,10 @@ public class InteractionController : MonoBehaviour
     public int Ammo;
     public bool Aiming;
     bool release;
-
+    public bool PointingAtBarrel;
     RaycastHit hit;
 
+    public GameObject InFrontOfController;
 
     //for debugging
     public GameObject holdingShapeObject;
@@ -41,18 +43,25 @@ public class InteractionController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Ammo = 7;
-        Beam = this.gameObject.GetComponent<LineRenderer>();
-        Beam.startWidth = 0.01f;
-        Beam.endWidth = 0.01f;
-        DrawLines();
- 
+       Ammo = 7;
+      //  Beam = this.gameObject.GetComponent<LineRenderer>();
+      //  Beam.startWidth = 0.01f;
+      //  Beam.endWidth = 0.01f;
+       // DrawLines();
+        AudioS = GetComponent<AudioSource>();
     }
 
 
     private void FixedUpdate()
     {
-
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity))
+        {
+            InFrontOfController = hit.collider.gameObject;
+            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward), Color.yellow);
+            if (hit.collider.tag == ("Bannana Bucket")) { PointingAtBarrel = true; print("truuue"); }
+            else { PointingAtBarrel = false; }
+        }
+        else {  }
         if (releaseforce < MaxReleaseForce)
         {
             releaseforce = releaseforce + ForceIncreaseSpeed;
@@ -62,7 +71,9 @@ public class InteractionController : MonoBehaviour
 
     }
     private void Update()
-  {       
+    {
+       
+       // 
         DrawLines();
     }
 
@@ -83,10 +94,12 @@ public class InteractionController : MonoBehaviour
 
     public void Release(GameObject a) //releasing the shape (gets called in the trigger release scripts)
     {
+        if (PointingAtBarrel) { Ammo = 7; AudioS.Play(); }
         Ammo--;
         Rigidbody rb = a.GetComponent<Rigidbody>();
         rb.useGravity = true;
         rb.isKinematic = false;
+        AudioS.Play();
        // this.transform.DetachChildren();
         // pickedUpFirstTime = false;
         rb.AddForce(transform.TransformDirection(Vector3.forward * releaseforce));

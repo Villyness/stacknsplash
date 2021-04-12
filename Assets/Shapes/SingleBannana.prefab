@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2935719076623014843}
   - component: {fileID: 2935719076621883771}
   - component: {fileID: 117661931728600976}
-  - component: {fileID: 6374518367745082634}
+  - component: {fileID: -8957110264581495115}
   m_Layer: 0
   m_Name: SingleBannana
   m_TagString: Untagged
@@ -95,8 +95,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!136 &6374518367745082634
-CapsuleCollider:
+--- !u!64 &-8957110264581495115
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -105,7 +105,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.13140938
-  m_Height: 0.49165
-  m_Direction: 1
-  m_Center: {x: 0.0024524778, y: 0.100607514, z: -0.008979768}
+  serializedVersion: 3
+  m_Convex: 1
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300000, guid: aeaf1ff159c27da4b8f1f44b22726686, type: 3}

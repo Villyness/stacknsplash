@@ -19,10 +19,10 @@ public class SplodyTriggers : MonoBehaviour
 
     private void Awake()
     {
-        //OutPartSystemObject = transform.GetChild(0).gameObject;
-        //if(!OutPartSystemObject) print("hello");
-       // OutPartSystem = OutPartSystemObject.GetComponent<ParticleSystem>();
-
+       //OutPartSystemObject = transform.GetChild(0).gameObject;
+       
+       OutPartSystem = transform.GetChild(0).gameObject.GetComponent<ParticleSystem>();
+       UpPartSystem = transform.GetChild(1).gameObject.GetComponent<ParticleSystem>();
         ///UpPartSystemObject = transform.GetChild(1).gameObject;
        // UpPartSystem = UpPartSystemObject.GetComponent<ParticleSystem>();
 

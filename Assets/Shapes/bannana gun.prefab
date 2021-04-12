@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3374221382066200080}
   - component: {fileID: 2796480092622086901}
   - component: {fileID: 306487531415100038}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: bannana gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79,6 +79,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: aeaf1ff159c27da4b8f1f44b22726686, type: 3}
       propertyPath: m_Name
       value: Bannana5
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: aeaf1ff159c27da4b8f1f44b22726686, type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: aeaf1ff159c27da4b8f1f44b22726686, type: 3}
       propertyPath: m_LocalPosition.x
@@ -159,6 +163,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bannana4
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: aeaf1ff159c27da4b8f1f44b22726686, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: aeaf1ff159c27da4b8f1f44b22726686, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.08253806
@@ -237,6 +245,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: aeaf1ff159c27da4b8f1f44b22726686, type: 3}
       propertyPath: m_Name
       value: Bannana3
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: aeaf1ff159c27da4b8f1f44b22726686, type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: aeaf1ff159c27da4b8f1f44b22726686, type: 3}
       propertyPath: m_LocalPosition.x
@@ -317,6 +329,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bannana2
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: aeaf1ff159c27da4b8f1f44b22726686, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: aeaf1ff159c27da4b8f1f44b22726686, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.015897188
@@ -395,6 +411,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: aeaf1ff159c27da4b8f1f44b22726686, type: 3}
       propertyPath: m_Name
       value: 'Bannana1 '
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: aeaf1ff159c27da4b8f1f44b22726686, type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: aeaf1ff159c27da4b8f1f44b22726686, type: 3}
       propertyPath: m_LocalPosition.x
@@ -475,6 +495,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bannana7
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: aeaf1ff159c27da4b8f1f44b22726686, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: aeaf1ff159c27da4b8f1f44b22726686, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.100329414
@@ -553,6 +577,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: aeaf1ff159c27da4b8f1f44b22726686, type: 3}
       propertyPath: m_Name
       value: Bannana6
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: aeaf1ff159c27da4b8f1f44b22726686, type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: aeaf1ff159c27da4b8f1f44b22726686, type: 3}
       propertyPath: m_LocalPosition.x
