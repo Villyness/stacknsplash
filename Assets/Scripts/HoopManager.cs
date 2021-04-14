@@ -23,9 +23,9 @@ public class HoopManager : MonoBehaviour
                 Instantiate(HoopPrefab, HoopSpawnLocations[a].position, Quaternion.Euler(90, 90, 0));
                 HoopsInScene++;
                 LastHoopLocationRef = i;
+                i = HoopsInScene;
                 yield return new WaitForSeconds(1f);  
-          }
-       
+          }      
     }
 
 
@@ -43,7 +43,8 @@ public class HoopManager : MonoBehaviour
 
     private void Update()
     {
-       
+        // StartCoroutine(InstantiateHoops());
+        if (HoopsInScene < MaxHoopsInScene) { StartCoroutine(InstantiateHoops()); };
     }
 
    int ChooseHoopSpawn(int i)
@@ -52,5 +53,8 @@ public class HoopManager : MonoBehaviour
         while (a == i) { a = Random.Range(0, 6); }
         return a;
     }
+
+    void StartOver()
+    { }
 
 }

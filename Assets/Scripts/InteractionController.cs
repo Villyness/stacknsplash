@@ -88,11 +88,11 @@ public class InteractionController : MonoBehaviour
         a = holdingShapeObject;
     }
 
+    public void Reload() { Ammo = 7; AudioS.Play(); }
     public void Release(GameObject a) //releasing the shape (gets called in the R/L button scripts)
     {
-        if (PointingAtBarrel) { Ammo = 7; AudioS.Play(); }  //this is meant to be a reload 
-        else //If not pointing at Ammo Barrel, "Fire"
-        {
+       
+      
             Ammo--;                                     
             Rigidbody rb = a.GetComponent<Rigidbody>();
             rb.useGravity = true;
@@ -101,7 +101,7 @@ public class InteractionController : MonoBehaviour
             rb.AddForce(transform.TransformDirection(Vector3.forward * releaseforce));
             releaseforce = 0;
             print("release");
-        }
+     
     }
 
 

@@ -29,13 +29,14 @@ public class HoopDisapear : MonoBehaviour
     {
         if (disapear)
         {
+            
             PlayAudio(PlayedAudio);
             evaluate += 0.1f;
             evaluate = Mathf.Clamp(evaluate, 0f, 1f);
             Shrink = curve.Evaluate(evaluate);                  
             transform.eulerAngles += new Vector3(10,0,0);
             ScaleDown();
-            if (transform.localScale.x < 0.5) { StartCoroutine(XplosionTrigger.PartyExplosion()); }
+            if (transform.localScale.x < 0.5) {  StartCoroutine(XplosionTrigger.PartyExplosion()); }
         }
     }
 
@@ -43,6 +44,7 @@ public class HoopDisapear : MonoBehaviour
     {
         if (AudioPlay == false)
         {
+            HoopManScript.HoopsInScene--;
             GetComponent<AudioSource>().clip = ChimePlayer.clip;
             GetComponent<AudioSource>().Play();
             PlayedAudio = true;

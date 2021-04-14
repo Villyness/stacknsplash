@@ -13,7 +13,14 @@ public class LeftButtonController : MonoBehaviour
         // else PController.Grabbing = false;
         if (OVRInput.GetUp(OVRInput.RawButton.LIndexTrigger))
         {
-            if (PController.Ammo >= 0) { SS.ShootBannana(SS.SingleBannanaPrefab); PController.Grabbing = false; }
+            if (!PController.PointingAtBarrel)
+            {
+                if (PController.Ammo >= 0)
+                {
+                    { SS.ShootBannana(SS.SingleBannanaPrefab); PController.Grabbing = false; }
+                }
+            }
+            else { PController.Reload(); }
         }
     }
 }

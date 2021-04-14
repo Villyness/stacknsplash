@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2935719076623014843}
   - component: {fileID: 2935719076621883771}
   - component: {fileID: 117661931728600976}
+  - component: {fileID: 7210085439626997395}
   - component: {fileID: -8957110264581495115}
   m_Layer: 0
   m_Name: SingleBannana
@@ -95,6 +96,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &7210085439626997395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2935719076619618235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e9bf66c64a16aa43a1f5547ce99b3c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Player: {fileID: 0}
+  DestroyDistance: 20
 --- !u!64 &-8957110264581495115
 MeshCollider:
   m_ObjectHideFlags: 0

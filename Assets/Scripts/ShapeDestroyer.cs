@@ -23,6 +23,9 @@ public class ShapeDestroyer : MonoBehaviour
                 
         };
     }
+    private void OnCollisionStay(Collision collision)
+    {
+        Destroy(this.gameObject);
+    }
 
-    
 }

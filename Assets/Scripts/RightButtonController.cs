@@ -23,7 +23,14 @@ public class RightButtonController : MonoBehaviour
         }
         if (OVRInput.GetUp(OVRInput.RawButton.RIndexTrigger))
         {
-            if (PController.Ammo > 0) { SS.ShootBannana(SS.SingleBannanaPrefab); PController.Grabbing = false;  }
+            if (!PController.PointingAtBarrel)
+            {
+                if (PController.Ammo >= 0)
+                {
+                    { SS.ShootBannana(SS.SingleBannanaPrefab); PController.Grabbing = false; }
+                }
+            }
+            else { PController.Reload(); }
         }
     }
 }
