@@ -44,36 +44,32 @@ public class InteractionController : MonoBehaviour
     void Start()
     {
        Ammo = 7;
-      //  Beam = this.gameObject.GetComponent<LineRenderer>();
-      //  Beam.startWidth = 0.01f;
-      //  Beam.endWidth = 0.01f;
-       // DrawLines();
-        AudioS = GetComponent<AudioSource>();
+       AudioS = GetComponent<AudioSource>();  //the sound the gun will make when firing 
     }
 
 
     private void FixedUpdate()
     {
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity))
+        //This is supposed to be a check to see whether the controller is pointing at the reload barrel. (Checjs for hit and also checks if that hit is barrel.
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity)) //this is supposed to be a check whether 
         {
             InFrontOfController = hit.collider.gameObject;
             Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward), Color.yellow);
             if (hit.collider.tag == ("Bannana Bucket")) { PointingAtBarrel = true; print("truuue"); }
             else { PointingAtBarrel = false; }
         }
-        else {  }
+        else { PointingAtBarrel = false; }
         if (releaseforce < MaxReleaseForce)
         {
             releaseforce = releaseforce + ForceIncreaseSpeed;
         }
-        pos = new Vector3[] { transform.position, transform.position + transform.forward };
-        holdingShapeObject = ShapespawnerScript.AmmoSingleBannana;
+
+        pos = new Vector3[] { transform.position, transform.position + transform.forward }; //setting the positions of the "beams" will probably turn this off later
+        holdingShapeObject = ShapespawnerScript.AmmoSingleBannana; //this is just for debugging
 
     }
     private void Update()
     {
-       
-       // 
         DrawLines();
     }
 
@@ -92,20 +88,20 @@ public class InteractionController : MonoBehaviour
         a = holdingShapeObject;
     }
 
-    public void Release(GameObject a) //releasing the shape (gets called in the trigger release scripts)
+    public void Release(GameObject a) //releasing the shape (gets called in the R/L button scripts)
     {
-        if (PointingAtBarrel) { Ammo = 7; AudioS.Play(); }
-        Ammo--;
-        Rigidbody rb = a.GetComponent<Rigidbody>();
-        rb.useGravity = true;
-        rb.isKinematic = false;
-        AudioS.Play();
-       // this.transform.DetachChildren();
-        // pickedUpFirstTime = false;
-        rb.AddForce(transform.TransformDirection(Vector3.forward * releaseforce));
-        releaseforce = 0;
-       // ShapespawnerScript.NewShape();
-        print("release");
+        if (PointingAtBarrel) { Ammo = 7; AudioS.Play(); }  //this is meant to be a reload 
+        else //If not pointing at Ammo Barrel, "Fire"
+        {
+            Ammo--;                                     
+            Rigidbody rb = a.GetComponent<Rigidbody>();
+            rb.useGravity = true;
+            rb.isKinematic = false;
+            AudioS.Play();
+            rb.AddForce(transform.TransformDirection(Vector3.forward * releaseforce));
+            releaseforce = 0;
+            print("release");
+        }
     }
 
 

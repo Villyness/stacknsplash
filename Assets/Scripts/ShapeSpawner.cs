@@ -5,32 +5,26 @@ using UnityEngine;
 
 public class ShapeSpawner : MonoBehaviour
 {
+
+    //This script handles the logicc for turning off banannas in the bananna gun (to indicate ammo) 
+    //and instantiates a single bannanna in front of the gun when fired (the physics logic is in the Interaction Controlller script)
     public InteractionController IC;
-    // public int ListDirection;
-    // public GameObject[] Shapes;
     public GameObject BannanaGunPrefab;
     public GameObject SingleBannanaPrefab;
     GameObject BannanaGun;
     public GameObject AmmoSingleBannana;
-   // public GameObject GunSingleBannana;
     public int ShapeDistanceFrom;
     public float CurrentShapeNo = 0;
     public int NextShapeNumber;
     public Vector3 ShapePos;
     public GameObject[] Bannanas;
-    // public enum AmmoStates { OneBannana, TwoBannana, ThreeBannana, FiveBannanna, SixBananna }
-    //AmmoStates BannanaAmmo;
-    // Start is called before the first frame update
+
+
     void Start()
     {
-        //CurrentShape = Instantiate(Shapeprefab, IC.pos[1], Quaternion.identity);
-        //  NewShape();
         SpawnBannanaGun(BannanaGunPrefab);
-        // foreach (int i = 0; i < BannanaGun.transform.childCount; i++)
-        // {
-        //     Bannanas[i-1] = BannanaGun.transform.GetChild(i).gameObject;
-        // }
-        Bannanas[0] = BannanaGun.transform.GetChild(0).gameObject; 
+
+        Bannanas[0] = BannanaGun.transform.GetChild(0).gameObject;  //these are the different banannas in the bannana gun  
         Bannanas[1] = BannanaGun.transform.GetChild(1).gameObject; 
         Bannanas[2] = BannanaGun.transform.GetChild(2).gameObject; 
         Bannanas[3] = BannanaGun.transform.GetChild(3).gameObject; 
@@ -43,8 +37,7 @@ public class ShapeSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        switch (IC.Ammo)
+        switch (IC.Ammo)    //this just handles the "different stages" of ammo and what the bannana gun will look like. we just turn the objects on or off
         {
             case 0:
                 Bannanas[0].SetActive(false);
@@ -98,45 +91,14 @@ public class ShapeSpawner : MonoBehaviour
                 Bannanas[6].SetActive(true);
                 break;
         }
-        //  ShapePos = IC.Beam.GetPosition(1);
-        // NewShape();
-        // CurrentShape = Shapeprefab;
     }
-  //  public void BannanaShooting()
-   // {
-   //
-   // }
 
-    public void NewShape()
-    {
-
-        print("test");
-        ShootBannana(BannanaGunPrefab);
-        IC.holdingShapeObject = AmmoSingleBannana;
-        IC.ChildObject(AmmoSingleBannana);
-
-        //   NextShapeNumber = Mathf.RoundToInt(CurrentShapeNo);
-
-    }
-    
-
-
-
-    // public IEnumerator ShapeControllerInput(float a) //this gets called in the right & left button controller scripts 
-    // {
-    //     if (a < 0 && CurrentShapeNo > 0) { CurrentShapeNo = CurrentShapeNo - 0.1f; }
-    //     if (a > 0 && CurrentShapeNo < 3) { CurrentShapeNo = CurrentShapeNo + 0.1f; }
-    //     if (a > 0 && CurrentShapeNo >= 3) { CurrentShapeNo = 0; }
-    //     if (a < 0 && CurrentShapeNo <= 0) { CurrentShapeNo = 3; }
-    //     yield return new WaitForSeconds(0.1f);
-    // }
-
-    public void ShootBannana(GameObject g)
+    public void ShootBannana(GameObject g)  //shoot a single bananna prefab out from where the gun is
     {
         AmmoSingleBannana = Instantiate(g, transform.position + (transform.forward/4), Random.rotation);
         IC.Release(AmmoSingleBannana);
     }
-    void SpawnBannanaGun(GameObject g)
+    void SpawnBannanaGun(GameObject g) //spawn the bannana gun gets called at start
     {       
         BannanaGun = Instantiate(g, transform.position + (transform.forward/4), transform.rotation * Quaternion.Euler(0, 90,0));
         IC.ChildObject(BannanaGun);
