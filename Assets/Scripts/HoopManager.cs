@@ -10,8 +10,13 @@ public class HoopManager : MonoBehaviour
     public int MaxHoopsInScene;
     public int HoopsInScene;
 
+    public float timer;
+    public int comboTime;
+
     public int LastHoopLocationRef;
 
+    public bool FirstHoop = true;
+    public bool finishLoop;
 
     IEnumerator InstantiateHoops()
     {
@@ -20,12 +25,13 @@ public class HoopManager : MonoBehaviour
           {           
                 print("In Loop");
                 int a = ChooseHoopSpawn(LastHoopLocationRef);
-                Instantiate(HoopPrefab, HoopSpawnLocations[a].position, Quaternion.Euler(90, 90, 0));
+                Instantiate(HoopPrefab, HoopSpawnLocations[a].position, Quaternion.Euler(90, 0, 0));
                 HoopsInScene++;
                 LastHoopLocationRef = i;
                 i = HoopsInScene;
                 yield return new WaitForSeconds(1f);  
-          }      
+          }
+        finishLoop = true;
     }
 
 
@@ -44,11 +50,12 @@ public class HoopManager : MonoBehaviour
     private void Update()
     {
         // StartCoroutine(InstantiateHoops());
-        if (HoopsInScene < MaxHoopsInScene) { StartCoroutine(InstantiateHoops()); };
+        HoopTimer();
+        if (finishLoop) { StartCoroutine(InstantiateHoops()); };
     }
 
    int ChooseHoopSpawn(int i)
-    {        
+    {   
         int a = Random.Range(0,6);
         while (a == i) { a = Random.Range(0, 6); }
         return a;
@@ -56,5 +63,20 @@ public class HoopManager : MonoBehaviour
 
     void StartOver()
     { }
+
+    void HoopTimer()
+    {
+        timer += Time.deltaTime;
+    }
+
+    public void TimerReset(GameObject a)
+    {
+        if (timer < comboTime && !FirstHoop) { Combo(); timer = 0; a.SetActive(true); }
+        else { timer = 0; FirstHoop = false; }
+    }
+    void Combo()
+    {
+        print("Combo");
+    }
 
 }

@@ -8,6 +8,9 @@ public class ShapeDestroyer : MonoBehaviour
     public int DestroyDistance;
     float shapedistance;
     bool TooFar;
+    float t;
+
+
 
     private void Start()
     {
@@ -25,7 +28,12 @@ public class ShapeDestroyer : MonoBehaviour
     }
     private void OnCollisionStay(Collision collision)
     {
-        Destroy(this.gameObject);
+        t += Time.deltaTime;
+        if (collision.collider.tag != "Fruit" && t > 1)
+        {
+            Destroy(this.gameObject);
+        }
     }
 
+    
 }

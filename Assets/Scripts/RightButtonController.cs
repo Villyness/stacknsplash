@@ -10,28 +10,11 @@ public class RightButtonController : MonoBehaviour
     public InteractionController PController;
     Vector2 JoystickInput;
     public ShapeSpawner SS;
+
     private void Update()
     {
-        //JoystickInput = OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick);
-        //if (PController.Grabbing == true) { PController.ShapeZPosOffset = JoystickInput.y; }
-        if (OVRInput.GetDown(OVRInput.RawButton.RIndexTrigger))
-        {
-           // EnableGauge();
-
-            if (PController.PointingAtInteractable)
-                PController.Grabbing = true;
-        }
-        if (OVRInput.GetUp(OVRInput.RawButton.RIndexTrigger))
-        {
-            if (!PController.PointingAtBarrel)
-            {
-                if (PController.Ammo >= 0)
-                {
-                    { SS.ShootBannana(SS.SingleBannanaPrefab); PController.Grabbing = false; }
-                }
-            }
-            else { PController.Reload(); }
-        }
+        if (OVRInput.Get(OVRInput.RawButton.RIndexTrigger)){ PController.TriggerDown = true; }
+        if (OVRInput.GetUp(OVRInput.RawButton.RIndexTrigger))  { SS.ShootFruit(SS.SingleFruitPrefab); PController.TriggerDown = false; }    
     }
 }
 

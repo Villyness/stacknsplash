@@ -9,6 +9,7 @@ TagManager:
   - PlayerPlatform
   - Manager
   - Bannana Bucket
+  - Fruit
   layers:
   - Default
   - TransparentFX

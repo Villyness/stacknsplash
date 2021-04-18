@@ -12,7 +12,7 @@ public class HoopMovement : MonoBehaviour
     // Update is called once per frame
     private void Start()
     {
-        PlayerPlatform = GameObject.FindGameObjectWithTag("PlayerPlatform");
+        PlayerPlatform = GameObject.FindGameObjectWithTag("Player");
         if (Random.value < 0.5f) { HoopVelocity = Random.Range(-20, -10); }
         else { HoopVelocity = Random.Range(10, 20); }
     }

@@ -5,103 +5,42 @@ using UnityEngine;
 
 public class ShapeSpawner : MonoBehaviour
 {
-
-    //This script handles the logicc for turning off banannas in the bananna gun (to indicate ammo) 
-    //and instantiates a single bannanna in front of the gun when fired (the physics logic is in the Interaction Controlller script)
+    //this script spawns the fruit guns as the controllers and instantiates the new fruit objects that are getting thrown
     public InteractionController IC;
-    public GameObject BannanaGunPrefab;
-    public GameObject SingleBannanaPrefab;
-    GameObject BannanaGun;
-    public GameObject AmmoSingleBannana;
+
+    public GameObject SingleFruitPrefab;
+    public GameObject FruitInHand;
+
+    public GameObject AmmoSingleFruit;
+
     public int ShapeDistanceFrom;
     public float CurrentShapeNo = 0;
     public int NextShapeNumber;
     public Vector3 ShapePos;
-    public GameObject[] Bannanas;
 
+    public bool Apple;
 
     void Start()
     {
-        SpawnBannanaGun(BannanaGunPrefab);
-
-        Bannanas[0] = BannanaGun.transform.GetChild(0).gameObject;  //these are the different banannas in the bannana gun  
-        Bannanas[1] = BannanaGun.transform.GetChild(1).gameObject; 
-        Bannanas[2] = BannanaGun.transform.GetChild(2).gameObject; 
-        Bannanas[3] = BannanaGun.transform.GetChild(3).gameObject; 
-        Bannanas[4] = BannanaGun.transform.GetChild(4).gameObject; 
-        Bannanas[5] = BannanaGun.transform.GetChild(5).gameObject; 
-        Bannanas[6] = BannanaGun.transform.GetChild(6).gameObject; 
-            
+        SpawnFruitinHand(SingleFruitPrefab);
     }
-
     // Update is called once per frame
     void Update()
     {
-        switch (IC.Ammo)    //this just handles the "different stages" of ammo and what the bannana gun will look like. we just turn the objects on or off
-        {
-            case 0:
-                Bannanas[0].SetActive(false);
-                Bannanas[1].SetActive(false);
-                Bannanas[2].SetActive(false);
-                Bannanas[3].SetActive(false);
-                Bannanas[4].SetActive(false);
-                Bannanas[5].SetActive(false);
-                Bannanas[6].SetActive(false);
-                break;
-            case 1:
-                Bannanas[1].SetActive(false);
-                Bannanas[2].SetActive(false);
-                Bannanas[3].SetActive(false);
-                Bannanas[4].SetActive(false);
-                Bannanas[5].SetActive(false);
-                Bannanas[6].SetActive(false);
-                break;
-            case 2:
-                Bannanas[2].SetActive(false);
-                Bannanas[3].SetActive(false);
-                Bannanas[4].SetActive(false);
-                Bannanas[5].SetActive(false);
-                Bannanas[6].SetActive(false);
-                break;
-            case 3:
-                Bannanas[3].SetActive(false);
-                Bannanas[4].SetActive(false);
-                Bannanas[5].SetActive(false);
-                Bannanas[6].SetActive(false);
-                break;
-            case 4:
-                Bannanas[4].SetActive(false);
-                Bannanas[5].SetActive(false);
-                Bannanas[6].SetActive(false);
-                break;
-            case 5:
-                Bannanas[5].SetActive(false);
-                Bannanas[6].SetActive(false);
-                break;
-            case 6:
-                Bannanas[6].SetActive(false);
-                break;
-            case 7:
-                Bannanas[0].SetActive(true);
-                Bannanas[1].SetActive(true);
-                Bannanas[2].SetActive(true);
-                Bannanas[3].SetActive(true);
-                Bannanas[4].SetActive(true);
-                Bannanas[5].SetActive(true);
-                Bannanas[6].SetActive(true);
-                break;
-        }
+        if (FruitInHand == null) { SpawnFruitinHand(SingleFruitPrefab); } //checking that the fruit gun isnt null
     }
 
-    public void ShootBannana(GameObject g)  //shoot a single bananna prefab out from where the gun is
+    public void ShootFruit(GameObject g)  //shoot a piece of fruit from your hand. 
     {
-        AmmoSingleBannana = Instantiate(g, transform.position + (transform.forward/4), Random.rotation);
-        IC.Release(AmmoSingleBannana);
+        AmmoSingleFruit = Instantiate(g, transform.position + (transform.forward/4), Random.rotation);
+        IC.Release(AmmoSingleFruit); //this doing physics stuff to the object in the Interaction controlelr script
     }
-    void SpawnBannanaGun(GameObject g) //spawn the bannana gun gets called at start
-    {       
-        BannanaGun = Instantiate(g, transform.position + (transform.forward/4), transform.rotation * Quaternion.Euler(0, 90,0));
-        IC.ChildObject(BannanaGun);
+    void SpawnFruitinHand(GameObject g) //spawn the gun
+    { 
+       //the apple and the bannana needed different rotations for the gun
+      if (Apple) FruitInHand = Instantiate(g, transform.position + (transform.forward/8), transform.rotation * Quaternion.Euler(90, 180,0)); 
+      else FruitInHand = Instantiate(g, transform.position + (transform.forward/8), transform.rotation * Quaternion.Euler(145, 180,0));
+     IC.ChildObject(FruitInHand); //this is childing the object to the hand and turning offf physics
     }
 
 }

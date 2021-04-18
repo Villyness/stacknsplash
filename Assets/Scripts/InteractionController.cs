@@ -14,7 +14,7 @@ public class InteractionController : MonoBehaviour
     // Update is called once per frame
 
     bool pickedUpFirstTime = false;
-    public LineRenderer Beam;
+
     public Vector3[] pos;
     GameObject Currentobject;
     Rigidbody ObjectRB;
@@ -22,13 +22,8 @@ public class InteractionController : MonoBehaviour
     public float MaxReleaseForce;
     public float ForceIncreaseSpeed;
     public float releaseforce;
-    public float MoveSpeed;
-    public float ShapeMinDistance;
-    public bool Grabbing;
-    public bool PointingAtInteractable = false;
-    public bool HoldingShape;
+    public bool TriggerDown;
 
-    public int Ammo;
     public bool Aiming;
     bool release;
     public bool PointingAtBarrel;
@@ -43,43 +38,23 @@ public class InteractionController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       Ammo = 7;
        AudioS = GetComponent<AudioSource>();  //the sound the gun will make when firing 
     }
 
 
     private void FixedUpdate()
     {
-        //This is supposed to be a check to see whether the controller is pointing at the reload barrel. (Checjs for hit and also checks if that hit is barrel.
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity)) //this is supposed to be a check whether 
-        {
-            InFrontOfController = hit.collider.gameObject;
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward), Color.yellow);
-            if (hit.collider.tag == ("Bannana Bucket")) { PointingAtBarrel = true; print("truuue"); }
-            else { PointingAtBarrel = false; }
-        }
-        else { PointingAtBarrel = false; }
-        if (releaseforce < MaxReleaseForce)
-        {
-            releaseforce = releaseforce + ForceIncreaseSpeed;
-        }
 
+        if (TriggerDown) { if (releaseforce < MaxReleaseForce) releaseforce = releaseforce + ForceIncreaseSpeed; }
+        
         pos = new Vector3[] { transform.position, transform.position + transform.forward }; //setting the positions of the "beams" will probably turn this off later
-        holdingShapeObject = ShapespawnerScript.AmmoSingleBannana; //this is just for debugging
-
+        holdingShapeObject = ShapespawnerScript.AmmoSingleFruit; //this is just for debugging
     }
-    private void Update()
-    {
-        DrawLines();
-    }
+ 
 
-    void DrawLines()
+    public void ChildObject(GameObject a) //turning off most phyisics for object in hand 
     {
-        Beam.SetPositions(pos);
-    }
-
-    public void ChildObject(GameObject a) //turning off most phyisics for the shape when its childed
-    {
+        a.GetComponent<MeshCollider>().enabled = false;
         Rigidbody rb = a.GetComponent<Rigidbody>();
         rb.velocity = Vector3.zero;
         rb.transform.parent = this.transform;
@@ -88,19 +63,16 @@ public class InteractionController : MonoBehaviour
         a = holdingShapeObject;
     }
 
-    public void Reload() { Ammo = 7; AudioS.Play(); }
-    public void Release(GameObject a) //releasing the shape (gets called in the R/L button scripts)
-    {
-       
-      
-            Ammo--;                                     
-            Rigidbody rb = a.GetComponent<Rigidbody>();
-            rb.useGravity = true;
-            rb.isKinematic = false;
-            AudioS.Play();
-            rb.AddForce(transform.TransformDirection(Vector3.forward * releaseforce));
-            releaseforce = 0;
-            print("release");
+
+    public void Release(GameObject a) //shooting a gameobject away (gets called in the "shape spawner" script)
+    {                                 
+        Rigidbody rb = a.GetComponent<Rigidbody>();
+        rb.useGravity = true;
+        rb.isKinematic = false;
+        AudioS.Play();
+        rb.AddForce(transform.TransformDirection(Vector3.forward * releaseforce));
+        releaseforce = 0;
+        print("release");
      
     }
 
