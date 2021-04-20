@@ -5,7 +5,6 @@ using UnityEngine;
 public class HoopCollisionTrigger : MonoBehaviour
 {
     public HoopDisapear HD;
-    public GameManager GM;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,7 +14,6 @@ public class HoopCollisionTrigger : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         print("hit");
-        HD.disapear = true;
-        GM.GameScore++;
+        HD.disapear = true;       
     }
 }

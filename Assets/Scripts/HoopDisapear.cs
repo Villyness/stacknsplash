@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class HoopDisapear : MonoBehaviour
 {
-    public HoopManager HoopManScript;
-    public GameObject ManagerObject;
-    public AudioManager AudioManScript;
     public AudioSource ChimePlayer;
     public Material ExpireMaterial;
     public Color StartColour;
     public Color EndColour;
     public float Lifetime;
+    public int MaxLifetime;
 
     public bool disapear;
     bool expired = false;
@@ -28,11 +26,8 @@ public class HoopDisapear : MonoBehaviour
     {
         ComboText = transform.GetChild(2).gameObject;
         XplosionTrigger = GetComponentInChildren<SplodyTriggers>();
-        ManagerObject = GameObject.FindGameObjectWithTag("Manager");
-        HoopManScript = ManagerObject.GetComponent<HoopManager>();
-        AudioManScript = ManagerObject.GetComponentInChildren<AudioManager>();
         ChimePlayer = GetComponent<AudioSource>();
-        ChimePlayer.clip = AudioManScript.HoopChimes[Random.Range(0, 7)];
+        ChimePlayer.clip = AudioManager.Instance.HoopChimes[Random.Range(0, 7)];
         ExpireMaterial = GetComponent<MeshRenderer>().material;
     }
 
@@ -40,7 +35,7 @@ public class HoopDisapear : MonoBehaviour
     {
         Lifetime += Time.deltaTime;
         ExpireMaterial.color = Color.Lerp(StartColour, EndColour, Lifetime/10);
-        if (Lifetime > 8) Expire(expired);
+        if (Lifetime > MaxLifetime) Expire(expired);
     }
 
     private void FixedUpdate()
@@ -61,7 +56,8 @@ public class HoopDisapear : MonoBehaviour
 
     void Expire(bool a)
     {
-        if (!a) HoopManScript.HoopsInScene--;
+        if (!a) { HoopManager.Instance.HoopsInScene--; if (GameManager.Instance.HiddenGameScore > 0) GameManager.Instance.HiddenGameScore-=2; }
+        GameManager.Instance.UpdateLevel();
         expired = true;
         evaluate += 0.1f;
         evaluate = Mathf.Clamp(evaluate, 0f, 1f);
@@ -75,18 +71,19 @@ public class HoopDisapear : MonoBehaviour
     void HoopDestroyed(bool a)
     {
         if (a == false)
-        {           
-            HoopManScript.TimerReset(ComboText);
-            HoopManScript.HoopsInScene--;
+        {
+            GameManager.Instance.GameScore+=5;
+            GameManager.Instance.HiddenGameScore += 5;
+            GameManager.Instance.UpdateLevel();
+            HoopManager.Instance.TimerReset(ComboText);
+            HoopManager.Instance.HoopsInScene--;
             GetComponent<AudioSource>().clip = ChimePlayer.clip;
             GetComponent<AudioSource>().Play();
             this.DoOnlyOnce = true;
         }
     }
 
-    // Update is called once per frame
-
-  
+    // Update is called once per frame  
 
     void ScaleDown()
     {
