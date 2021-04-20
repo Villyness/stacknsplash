@@ -8,6 +8,8 @@ public class ChargeGauge : MonoBehaviour
 {
     private Canvas ownCanvas;
     private Slider loadGauge;
+    public GameObject rightHandAnchor;
+    private InteractionController refValue;
 
     //some inefficient stuff to put in functionality for now
     //private float gaugeMax;
@@ -15,25 +17,32 @@ public class ChargeGauge : MonoBehaviour
     void Start()
     {
         ownCanvas = GetComponent<Canvas>();
+        loadGauge = GetComponentInChildren<Slider>();
         //GaugeStart();
         //Findnt<RightButtonController>().EnableGauge += GaugeStart;
         FindObjectOfType<RightButtonController>().EnableGauge += GaugeStart;
-        loadGauge.maxValue = FindObjectOfType<InteractionController>().MaxReleaseForce;
+        FindObjectOfType<RightButtonController>().DisableGauge += GaugeStop;
+        refValue = rightHandAnchor.GetComponent<InteractionController>();
+        loadGauge.maxValue = refValue.MaxReleaseForce;
     }
 
     // Update is called once per frame
     void FixedUpdate()  //needs optimising later
     {
-        while (ownCanvas.enabled == true)
+        if (ownCanvas.enabled == true)
         {
-            // there are more than one InteractionControllers. Need to refract the code there.
-            Debug.Log(FindObjectOfType<InteractionController>().releaseforce);
-            loadGauge.value = FindObjectOfType<InteractionController>().releaseforce; 
+            loadGauge.value = refValue.releaseforce;
+            Debug.Log("Hi");
         }
     }
 
     public void GaugeStart()
     {
         ownCanvas.enabled = true;
+    }
+
+    public void GaugeStop()
+    {
+        ownCanvas.enabled = false;
     }
 }

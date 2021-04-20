@@ -13,8 +13,8 @@ public class RightButtonController : MonoBehaviour
 
     private void Update()
     {
-        if (OVRInput.Get(OVRInput.RawButton.RIndexTrigger)){ PController.TriggerDown = true; }
-        if (OVRInput.GetUp(OVRInput.RawButton.RIndexTrigger))  { SS.ShootFruit(SS.SingleFruitPrefab); PController.TriggerDown = false; }    
+        if (OVRInput.Get(OVRInput.RawButton.RIndexTrigger)){ PController.TriggerDown = true; EnableGauge(); }
+        if (OVRInput.GetUp(OVRInput.RawButton.RIndexTrigger))  { SS.ShootFruit(SS.SingleFruitPrefab); PController.TriggerDown = false;  DisableGauge(); }    
     }
 }
 
