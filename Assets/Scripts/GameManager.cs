@@ -41,14 +41,9 @@ using UnityEngine;
         public void UpdateLevel()
         {
             if (HiddenGameScore < LevelTwoScore) { Level = 1; }
-            if (HiddenGameScore >= LevelTwoScore && GameScore < LevelThreeScore) { Level = 2; }
-            if (HiddenGameScore >= LevelThreeScore && GameScore < LevelFourScore) { Level = 3; }
+            if (HiddenGameScore >= LevelTwoScore && HiddenGameScore < LevelThreeScore) { Level = 2; }
+            if (HiddenGameScore >= LevelThreeScore && HiddenGameScore < LevelFourScore) { Level = 3; }
             if (HiddenGameScore >= LevelFourScore) { Level = 4; }
         }
-
-    public void UpdateGameScoreUI()
-    {
-
-    }
 }
 

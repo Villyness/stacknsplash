@@ -21,7 +21,10 @@ public class HoopManager : MonoBehaviour
         }
     }
 
+    //This script should really be called "HoopSpawnManager" . It handles where the hoops are going to spawn in the scene this changes depending on the level the player is at 
+
     public GameObject HoopPrefab;   //the default hoop prefab
+    public GameObject CurrentHoop;
 
     public int MaxHoopsInScene; //max amount of hoops in scene, if there is less that max, another hoop will spawn
     public int HoopsInScene;    //current amount of hoops in scene
@@ -74,13 +77,98 @@ public class HoopManager : MonoBehaviour
         {
             CheckSpawnLocation();
             int a = HoopSpawnLocationIndex;
-            Instantiate(HoopPrefab, HoopSpawnLocations[a].position, Quaternion.Euler(90, 0, 0));
+            CurrentHoop = Instantiate(HoopPrefab, HoopSpawnLocations[a].position, Quaternion.Euler(90, 0, 0));
+            HoopSizeAndSpeed(CurrentHoop,HoopSpawnLocationIndex);
             HoopsInScene++;
             LastHoopLocationRef = i;
             i = HoopsInScene;
             yield return new WaitForSeconds(HoopSpawnDelay);
         }
         finishLoop = true;
+    }
+
+    void CheckSpawnLocation() //this decides how the hoops will spawn taking the level into accoutn
+    {
+        switch (GameManager.Instance.Level)
+        {
+            case 1:
+                MaxHoopsInScene = 12;
+                HoopSpawnLocationIndex = Level1Spawn();
+                break;
+            case 2:
+                MaxHoopsInScene = 12;
+                HoopSpawnLocationIndex = Level2Spawn(LastHoopLocationRef);
+                HoopSpawnDelay = 0.5f;
+                break;
+            case 3:
+                MaxHoopsInScene = 15;
+                HoopSpawnLocationIndex = Level3Spawn(LastHoopLocationRef);
+                break;
+            case 4:
+                MaxHoopsInScene = 15;
+                HoopSpawnLocationIndex = Level4Spawn(LastHoopLocationRef);
+                break;
+        }
+    }
+
+
+    void HoopSizeAndSpeed(GameObject a, int b) //this decides the hoop prefabs velocity and size depending on what lane it will spawn in
+    {
+        HoopDisapear DisappearScript = a.GetComponentInChildren<HoopDisapear>();
+        HoopMovement MovementScript = a.GetComponentInChildren<HoopMovement>();
+        if (DisappearScript == null) { print("null"); }
+        switch (b)
+        {
+            case 0: //lane 1 
+                MovementScript.HoopSize = 0.5f;
+                MovementScript.pingPong = true;
+                break;
+            case 1: //lane 2
+                MovementScript.HoopSize = 0.8f;
+                MovementScript.pingPong = false;
+                break;
+            case 2: //lane 3
+                MovementScript.HoopSize = 1;
+                MovementScript.pingPong = false;
+                break;
+            case 3: //lane 4
+                MovementScript.HoopSize = 1;
+                MovementScript.pingPong = false;
+                break;
+            case 4: //lane 5
+                MovementScript.HoopSize = 1;
+                MovementScript.pingPong = false;
+                break;
+            case 5: //lane 6
+                MovementScript.HoopSize = 1;
+                MovementScript.pingPong = false;
+                break;
+            case 6: //lane 1
+                MovementScript.HoopSize = 0.5f;
+                MovementScript.pingPong = true;
+                break;
+            case 7: //lane 2
+                MovementScript.HoopSize = 0.8f;
+                MovementScript.pingPong = false;
+                break;
+            case 8: //lane 3
+                MovementScript.HoopSize = 1;
+                MovementScript.pingPong = false;
+                break;
+            case 9: //lane 4
+                MovementScript.HoopSize = 1;
+                MovementScript.pingPong = false;
+                break;
+            case 10:   //lane 5
+                MovementScript.HoopSize = 1;
+                MovementScript.pingPong = false;
+                break;
+            case 11:    //lane 6
+                MovementScript.HoopSize = 1;
+                MovementScript.pingPong = false;
+                break;
+
+        }
     }
 
     public void TimerReset(GameObject a)    //gets called in the "hoop disapear" script. resets timer to 0 and checks if it was a combo  
@@ -91,52 +179,33 @@ public class HoopManager : MonoBehaviour
 
     void Combo()    //combo stuff
     {
-        print("Combo");
+        GameManager.Instance.GameScore += 5;
     }
 
-    void CheckSpawnLocation()
-    {
-        switch (GameManager.Instance.Level)
-        {
-            case 1:
-                MaxHoopsInScene = 12;
-                HoopSpawnLocationIndex = Level1Spawn();
-                break;
-            case 2:
-                HoopSpawnLocationIndex = Level2Spawn(LastHoopLocationRef);
-                break;
-            case 3:
-                HoopSpawnLocationIndex = Level3Spawn(LastHoopLocationRef);
-                break;
-            case 4:
-                HoopSpawnLocationIndex = Level4Spawn(LastHoopLocationRef);
-                break;
-        }
-    }
-
+ 
     //these are all the int()s will be an idex in spawn transforms[] that is used to detirmine the hoops transform position in its spawn loop
-    int Level1Spawn()   //the first stage is meant to be more uniform and the rings will all spawn in the same "lane" in front and behind the player 
+    int Level1Spawn()   //lvl 1 is meant to be more uniform and the rings will all spawn in the same "lane" in front and behind the player 
     {
         int a;
         if (HoopSpawnLocationIndex ==1) { a = 7;}
         else { a = 1;  }
         return a;
     }
-    int Level2Spawn(int i)   //the second stage 
+    int Level2Spawn(int i)   //lvl 2 the rings will still spawn in the same one lane 
     {
         int a;
         if (HoopSpawnLocationIndex == 1) { a = 7; }
         else { a = 1; }
         return a;   
     }
-    int Level3Spawn(int i) 
+    int Level3Spawn(int i) //lvl 3 the rings will spawn between lanes 0-3 in front and behind 
     {
         int a;
         if (Random.value < .5) { a = Random.Range(0, 3); }     //50% chance of in front or behind
         else { a = Random.Range(6, 9); }  //choosing a random spot in the array
         return a;
     }
-    int Level4Spawn(int i) 
+    int Level4Spawn(int i) //level 4 rings can spawn in any lane
     {
         int a;
         if (Random.value < .5) { a = Random.Range(0, 5); }     //50% chance of in front or behind

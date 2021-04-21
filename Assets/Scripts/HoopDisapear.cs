@@ -19,13 +19,12 @@ public class HoopDisapear : MonoBehaviour
     public GameObject ComboText;
     bool DoOnlyOnce;
     bool changeMat = false;
+    bool smallenough = false;
     float Shrink;
     float evaluate = 0;
     // Start is called before the first frame update
     void Start()
-    {
-        ComboText = transform.GetChild(2).gameObject;
-        XplosionTrigger = GetComponentInChildren<SplodyTriggers>();
+    {   
         ChimePlayer = GetComponent<AudioSource>();
         ChimePlayer.clip = AudioManager.Instance.HoopChimes[Random.Range(0, 7)];
         ExpireMaterial = GetComponent<MeshRenderer>().material;
@@ -43,12 +42,12 @@ public class HoopDisapear : MonoBehaviour
         if (disapear)
         {
             HoopDestroyed(DoOnlyOnce);
-            evaluate += 0.1f;
-            evaluate = Mathf.Clamp(evaluate, 0f, 1f);
-            Shrink = curve.Evaluate(evaluate);
-            transform.eulerAngles += new Vector3(10, 0, 0);
-            ScaleDown();
-            if (transform.localScale.x < 0.5) { StartCoroutine(XplosionTrigger.PartyExplosion()); }
+            //evaluate += 0.1f;
+            //evaluate = Mathf.Clamp(evaluate, 1f, 0f);
+            //Shrink = curve.Evaluate(evaluate);
+            //transform.eulerAngles += new Vector3(10, 0, 0);
+            ScaleDown(smallenough);
+            if (transform.localScale.x < 0.3) { smallenough = true; StartCoroutine(XplosionTrigger.PartyExplosion()); print("getting small"); }
         }
    
 
@@ -63,11 +62,10 @@ public class HoopDisapear : MonoBehaviour
         evaluate = Mathf.Clamp(evaluate, 0f, 1f);
         Shrink = curve.Evaluate(evaluate);
         transform.eulerAngles += new Vector3(10, 0, 0);
-        ScaleDown();
-        if (transform.localScale.x < 0.5) { Destroy(this.gameObject); } 
+        ScaleDown(smallenough);
+        if (transform.localScale.x < 0.5) { smallenough = true;  Destroy(transform.parent.gameObject); } 
     }
         
-
     void HoopDestroyed(bool a)
     {
         if (a == false)
@@ -83,10 +81,8 @@ public class HoopDisapear : MonoBehaviour
         }
     }
 
-    // Update is called once per frame  
-
-    void ScaleDown()
+    void ScaleDown(bool a)
     {
-        transform.localScale = transform.localScale - new Vector3(Shrink,0,Shrink); 
+        if (!a) { transform.localScale = transform.localScale - new Vector3(0.3f, 0, 0.3f); }
     }
 }

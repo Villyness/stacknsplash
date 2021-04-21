@@ -12,37 +12,27 @@ public class SplodyTriggers : MonoBehaviour
 
     public ParticleSystem OutPartSystem;
 
-    GameObject Shape;
-
-    MeshRenderer ShapeRenderer;
+    public MeshRenderer HoopMesh;
    
 
-    private void Awake()
+    private void Start()
     {
-       //OutPartSystemObject = transform.GetChild(0).gameObject;
-       
-       OutPartSystem = transform.GetChild(0).gameObject.GetComponent<ParticleSystem>();
-       UpPartSystem = transform.GetChild(1).gameObject.GetComponent<ParticleSystem>();
-        ///UpPartSystemObject = transform.GetChild(1).gameObject;
-       // UpPartSystem = UpPartSystemObject.GetComponent<ParticleSystem>();
 
-        Shape = transform.parent.gameObject;
-        ShapeRenderer = Shape.GetComponent<MeshRenderer>();
     }
 
     public IEnumerator PartyExplosion()
     {
-        ShapeRenderer.enabled = false;
+        HoopMesh.enabled = false;
+        print("party");
+         float Outtime = OutPartSystem.main.duration;
+         OutPartSystem.Play();
+         yield return new WaitForSeconds(Outtime);
+        
+         UpPartSystem.Play();
+         float Uptime = UpPartSystem.main.duration;
+         yield return new WaitForSeconds(Uptime);
 
-        float Outtime = OutPartSystem.main.duration;
-        OutPartSystem.Play();
-        yield return new WaitForSeconds(Outtime);
-
-        UpPartSystem.Play();
-        float Uptime = UpPartSystem.main.duration;
-        yield return new WaitForSeconds(Uptime);
-
-        Destroy(Shape);
+        Destroy(this.gameObject);
         yield return null;
     }
 }
