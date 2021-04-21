@@ -15858,12 +15858,52 @@ PrefabInstance:
       propertyPath: rightHandAnchor
       value: 
       objectReference: {fileID: 135230611}
+    - target: {fileID: 1758124960, guid: 7065fc029ed5195478e2b2d3462ccd07, type: 3}
+      propertyPath: IsRightController
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1758124960, guid: 7065fc029ed5195478e2b2d3462ccd07, type: 3}
+      propertyPath: HandAnchor
+      value: 
+      objectReference: {fileID: 135230611}
     - target: {fileID: 1782064878, guid: 7065fc029ed5195478e2b2d3462ccd07, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1255068279, guid: 7065fc029ed5195478e2b2d3462ccd07, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1255068283, guid: 7065fc029ed5195478e2b2d3462ccd07, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 795850438, guid: 7065fc029ed5195478e2b2d3462ccd07, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7065fc029ed5195478e2b2d3462ccd07, type: 3}
+--- !u!1 &1546807550 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1255068279, guid: 7065fc029ed5195478e2b2d3462ccd07,
+    type: 3}
+  m_PrefabInstance: {fileID: 1546807549}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1546807551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1546807550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01758625ccf24c744bfacd67ee076b49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HandAnchor: {fileID: 1326231593}
+  IsRightController: 0
 --- !u!4 &1548684448 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8261808234323198674, guid: 1c069ad28936c854b8e1438370115ae2,

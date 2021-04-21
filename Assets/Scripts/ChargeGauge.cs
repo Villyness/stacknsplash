@@ -8,7 +8,9 @@ public class ChargeGauge : MonoBehaviour
 {
     private Canvas ownCanvas;
     private Slider loadGauge;
-    public GameObject rightHandAnchor;
+    public GameObject HandAnchor;
+    public bool IsRightController;
+    //public GameObject Controller;
     private InteractionController refValue;
 
     //some inefficient stuff to put in functionality for now
@@ -20,9 +22,17 @@ public class ChargeGauge : MonoBehaviour
         loadGauge = GetComponentInChildren<Slider>();
         //GaugeStart();
         //Findnt<RightButtonController>().EnableGauge += GaugeStart;
-        FindObjectOfType<RightButtonController>().EnableGauge += GaugeStart;
-        FindObjectOfType<RightButtonController>().DisableGauge += GaugeStop;
-        refValue = rightHandAnchor.GetComponent<InteractionController>();
+        if (IsRightController == true)
+        {
+            FindObjectOfType<RightButtonController>().EnableGauge += GaugeStart;
+            FindObjectOfType<RightButtonController>().DisableGauge += GaugeStop;
+        }
+        else
+        {
+            FindObjectOfType<LeftButtonController>().EnableGauge += GaugeStart;
+            FindObjectOfType<LeftButtonController>().DisableGauge += GaugeStop;
+        }
+        refValue = HandAnchor.GetComponent<InteractionController>();
         loadGauge.maxValue = refValue.MaxReleaseForce;
     }
 
