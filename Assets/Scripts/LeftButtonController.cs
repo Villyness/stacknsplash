@@ -5,7 +5,10 @@ using System;
 
 public class LeftButtonController : MonoBehaviour
 {
-    public InteractionController PController;
+    // V's comment tasklist
+    //
+
+    public InteractionController PController;   // Prolly doesn't need to be public, can set it to do an event.
     Vector2 JoystickInput;
     public ShapeSpawner SS;
     public event Action EnableGauge;

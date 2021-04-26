@@ -25,6 +25,7 @@ public class ChargeGauge : MonoBehaviour
         //loadGauge = GetComponentInChildren<Slider>();
         //GaugeStart();
         //Findnt<RightButtonController>().EnableGauge += GaugeStart;
+
         if (IsRightController == true)
         {
             FindObjectOfType<RightButtonController>().EnableGauge += GaugeStart;
@@ -37,14 +38,16 @@ public class ChargeGauge : MonoBehaviour
         }
         refValue = HandAnchor.GetComponent<InteractionController>();
         //loadGauge.maxValue = refValue.MaxReleaseForce;
-        middleThreshold = refValue.MaxReleaseForce * 2/3;
-        upperThreshold = refValue.MaxReleaseForce;
+        /*middleThreshold = refValue.MaxReleaseForce * 2/3;
+        upperThreshold = refValue.MaxReleaseForce;*/
+        refValue.SecondGauge += ShowSecondSection;
+        refValue.MaxGauge += ShowThirdSection;
     }
 
     // Update is called once per frame
     void FixedUpdate()  //needs optimising later
     {
-        if (gaugeSections[0].GetComponent<MeshRenderer>().enabled == true)
+        /*if (gaugeSections[0].GetComponent<MeshRenderer>().enabled == true)
         {
             //loadGauge.value = refValue.releaseforce;
             //Debug.Log("Hi");
@@ -57,7 +60,7 @@ public class ChargeGauge : MonoBehaviour
             {
                 gaugeSections[2].GetComponent<MeshRenderer>().enabled = true;
             }
-        }
+        }*/
 
         
     }
@@ -75,5 +78,15 @@ public class ChargeGauge : MonoBehaviour
         {
             obj.GetComponent<MeshRenderer>().enabled = false;
         }
+    }
+
+    private void ShowSecondSection()
+    {
+        gaugeSections[1].GetComponent<MeshRenderer>().enabled = true;
+    }
+
+    private void ShowThirdSection()
+    {
+        gaugeSections[2].GetComponent<MeshRenderer>().enabled = true;
     }
 }
