@@ -21,31 +21,87 @@ public class HoopManager : MonoBehaviour
         }
     }
 
-    //This script should really be called "HoopSpawnManager" . It handles where the hoops are going to spawn in the scene this changes depending on the level the player is at 
-
+    [Header("References Needed")]
+    [Tooltip("Drag Hoop Prefab from Asset Folder not scene")]
     public GameObject HoopPrefab;   //the default hoop prefab
-    public GameObject CurrentHoop;
-
-    public int MaxHoopsInScene; //max amount of hoops in scene, if there is less that max, another hoop will spawn
-    public int HoopsInScene;    //current amount of hoops in scene
-    
+    [Tooltip("Drag from Scene")]
     public GameObject FrontHoopSpawn;    //The game objects in the scene that the hoop spawn locations are childed to 
-    public GameObject BackHoopSpawn;   
-    public Transform[] HoopSpawnLocations;  //array of hoop Spawn locations
-    public int HoopSpawnLocationIndex;  //this gets updated in a switch statement checking what level we're on and is used when setting the position of a new hoop in the for loop
-    public int LastHoopLocationRef = 0; //a reference to a position in the spawn location array from the last loop. this is just to avoid hoops spawning in the same spot twice
+    [Tooltip("Drag from Scene")]
+    public GameObject BackHoopSpawn;
+    [Space(10)]
 
-    public float HoopSpawnDelay; //amount in seconds the loop has to wait every cycle. can be used to space out how far apart the hoops will be
-    public float timer; //a timer that resets whenever a player shoots a hoop
-    public int comboTime;   //if the player shoots a hoop while timer <= comboTime then they get a combo
- 
-    public bool FirstHoop = true;   //this is a check so the player doesnt get a combo on their first ring
-    public bool finishLoop; //this is just to restart the hoop spawn loop if it finishes (without restarting it a bunch of times per second)
+    [Header("Combo")]
+    public int ComboTimeLimit;   //if the player shoots a hoop while timer <= comboTime then they get a combo
+    public enum Direction { AntiClockwise, Clockwise, Alternate}
+    [Space(10)]
+
+    [Header("Hoop Level Progression")]
+    [Header("Spawn Locations are numbered from 0-5 in Front," +
+        " and  6-11 Behind")]
+    public int CurrentAmountHoops;    //current amount of hoops in scene
+    [Space(1)]
+    [Header("Level 1")]
+    public Direction Level1Direction;
+    public int Level1MaxHoops;
+    public int Level1HoopLifeTime;
+    public int Level1HoopSpawnDelay;
+    public Vector2 Level1HoopvelocityMinMax;
+    public int Level1ChanceOfPingPong;
+    public Vector2 Level1HoopSizeMinMax;
+    public bool[] Level1HoopLocationIndexes = new bool[12];
+    [Header("Level 2")]
+    public Direction Level2Direction;
+    public int Level2MaxHoops;
+    public int Level2HoopLifeTime;
+    public int Level2HoopSpawnDelay;
+    public Vector2 Level2HoopvelocityMinMax;
+    public int Level2ChanceOfPingPong;
+    public Vector2 Level2HoopSizeMinMax;
+    public bool[] Level2HoopLocationIndexes = new bool[12];
+    [Header("Level 3")]
+    public Direction Level3Direction;
+    public int Level3MaxHoops;
+    public int Level3HoopLifeTime;
+    public int Level3HoopSpawnDelay;
+    public Vector2 Level3HoopvelocityMinMax;
+    public int Level3ChanceOfPingPong;
+    public Vector2 Level3HoopSizeMinMax;
+    public bool[] Level3HoopLocationIndexes = new bool[12];
+    [Header("Level 4")]
+    public Direction Level4Direction;
+    public int Level4MaxHoops;
+    public int Level4HoopLifeTime;
+    public int Level4HoopSpawnDelay;
+    public Vector2 Level4HoopvelocityMinMax;
+    public int Level4ChanceOfPingPong;
+    public Vector2 Level4HoopSizeMinMax;
+    public bool[] Level4HoopLocationIndexes = new bool[12];
+
+   // List<Transform> HoopSpawnLocations ;
+   Transform[] HoopSpawnLocations = new Transform[12];  //array of hoop Spawn locations
+    float timer; //a timer that resets whenever a player shoots a hoop
+    bool FirstHoop = true;   //this is a check so the player doesnt get a combo on their first ring
+    bool finishLoop; //this is just to restart the hoop spawn loop if it finishes (without restarting it a bunch of times per second)
+
+    //All the variables below are changed everytime the level is updated. These variables determine the spawn delay, size, location, and velocity of each hoop in the for loop
+    public List<int> CurrentSpawnLocationIndexes;
+    int CurrentLocationIndex = 0; //a reference to a position in the spawn location array from the last loop. this is just to avoid hoops spawning in the same spot twice
+    GameObject CurrentHoop;
+    int CurrentHoopSpawnLocationIndex;  //this gets updated in a switch statement checking what level we're on and is used when setting the position of a new hoop in the for loop
+    float CurrentHoopSpawnDelay; //amount in seconds the loop has to wait every cycle. can be used to space out how far apart the hoops will be
+    int CurrentMaxHoopsInScene; //max amount of hoops in scene, if there is less that max, another hoop will spawn     
+    int CurrentHoopMaxLifetime;
+    Vector2 CurrentHoopVelocityMinMax;
+    public float CurrentHoopVelocity;
+    Vector2 CurrentHoopSizeMinMax;//this needs to be read only in the inspector 
+    float CurrentHoopSize;
+    bool PingPong;
+    bool AntiClockwise;
+    Direction CurrentDirection;
 
     private void Start()
     {
-        HoopSpawnLocationIndex = Level1Spawn();
-        //in front of player
+        //in front of player 
         HoopSpawnLocations[0] = FrontHoopSpawn.transform.GetChild(0);    //the hoop spawn locations are game objects in the scene 
         HoopSpawnLocations[1] = FrontHoopSpawn.transform.GetChild(1);    //there might have been a less ugly way to assign them but this works :P
         HoopSpawnLocations[2] = FrontHoopSpawn.transform.GetChild(2);
@@ -59,7 +115,6 @@ public class HoopManager : MonoBehaviour
         HoopSpawnLocations[9] = BackHoopSpawn.transform.GetChild(3);
         HoopSpawnLocations[10] = BackHoopSpawn.transform.GetChild(4);
         HoopSpawnLocations[11] = BackHoopSpawn.transform.GetChild(5);
-
         StartCoroutine(InstantiateHoops());
     }
 
@@ -71,109 +126,112 @@ public class HoopManager : MonoBehaviour
 
     IEnumerator InstantiateHoops()
     {
-        //I did it in a for loop rather than a while loop as it seemed easier to control the amount of hoops that would spawn 
-        //this just means i need to restart the loop if the conditions in for() are met. 
-        for (int i = HoopsInScene; i < MaxHoopsInScene; i++)
-        {
-            CheckSpawnLocation();
-            int a = HoopSpawnLocationIndex;
-            CurrentHoop = Instantiate(HoopPrefab, HoopSpawnLocations[a].position, Quaternion.Euler(90, 0, 0));
-            HoopSizeAndSpeed(CurrentHoop,HoopSpawnLocationIndex);
-            HoopsInScene++;
-            LastHoopLocationRef = i;
-            i = HoopsInScene;
-            yield return new WaitForSeconds(HoopSpawnDelay);
+        //this loop is instantiating a hoop prefab and setting its values that are influenced by the NewHoopLevel() below and the Game level
+        for (int i = CurrentAmountHoops; i < CurrentMaxHoopsInScene; i++)
+        {            
+            //note the "CurrentHoopSpawnLocationIndex" = the value of the element that is randomly picked from the CurrentSpawnLocationIndexes<> list and and not the indexes in the Random.Range() method
+            CurrentHoopSpawnLocationIndex = CurrentSpawnLocationIndexes[Random.Range(0, CurrentSpawnLocationIndexes.Count)];
+            CurrentHoop = Instantiate(HoopPrefab, HoopSpawnLocations[CurrentHoopSpawnLocationIndex].position, Quaternion.Euler(90, 0, 0)); //add dot product check here to fix combo backwards
+            HoopMovement HM = CurrentHoop.GetComponentInChildren<HoopMovement>();
+            HoopDisapear HD = CurrentHoop.GetComponentInChildren<HoopDisapear>();
+            CurrentHoopSize = Random.Range(CurrentHoopSizeMinMax.x,CurrentHoopSizeMinMax.y); //Randomly selecting from the current min or max this hoop could spawn
+            if (CurrentLocationIndex != 0 && CurrentLocationIndex != 6) { HM.HoopSize = CurrentHoopSize; } else { HM.HoopSize = 0.5f; }
+            CurrentHoopVelocity = Random.Range(CurrentHoopVelocityMinMax.x, CurrentHoopVelocityMinMax.y);            
+            HM.HoopVelocity = ChooseDirection(CurrentDirection, CurrentHoopVelocity);
+            HM.pingPong = PingPong;
+            HD.MaxLifetime = CurrentHoopMaxLifetime;
+            CurrentAmountHoops++;
+            CurrentLocationIndex = i;
+            i = CurrentAmountHoops;
+            yield return new WaitForSeconds(CurrentHoopSpawnDelay);
         }
         finishLoop = true;
     }
 
-    void CheckSpawnLocation() //this decides how the hoops will spawn taking the level into accoutn
+    public void NewHoopLevel(bool a) //this gets called once in the game manager everytime the hidden score goes over or under a trigger for level change
     {
-        switch (GameManager.Instance.Level)
+        if (a)
         {
-            case 1:
-                MaxHoopsInScene = 12;
-                HoopSpawnLocationIndex = Level1Spawn();
-                break;
-            case 2:
-                MaxHoopsInScene = 12;
-                HoopSpawnLocationIndex = Level2Spawn(LastHoopLocationRef);
-                HoopSpawnDelay = 0.5f;
-                break;
-            case 3:
-                MaxHoopsInScene = 15;
-                HoopSpawnLocationIndex = Level3Spawn(LastHoopLocationRef);
-                break;
-            case 4:
-                MaxHoopsInScene = 15;
-                HoopSpawnLocationIndex = Level4Spawn(LastHoopLocationRef);
-                break;
+            a = false;
+            switch (GameManager.Instance.Level)
+            {
+                case 1:
+                    CurrentMaxHoopsInScene = Level1MaxHoops;
+                    CurrentHoopMaxLifetime = Level1HoopLifeTime;
+                    CurrentHoopSpawnDelay = Level1HoopSpawnDelay;
+                    CurrentHoopVelocityMinMax = Level1HoopvelocityMinMax;
+                    CurrentDirection = Level1Direction;
+                    if (Random.Range(0, Level1ChanceOfPingPong) > Random.Range(0, 100)) { PingPong = true; } else { PingPong = false; }
+                    CurrentHoopSizeMinMax = Level1HoopSizeMinMax;
+                    AssignSpawnPointsToList(Level1HoopLocationIndexes);
+                    break;
+                case 2:
+                    CurrentMaxHoopsInScene = Level2MaxHoops;
+                    CurrentHoopMaxLifetime = Level2HoopLifeTime;
+                    CurrentHoopSpawnDelay = Level2HoopSpawnDelay;
+                    CurrentHoopVelocityMinMax = Level2HoopvelocityMinMax;
+                    CurrentDirection = Level2Direction;
+                    if (Random.Range(0, Level2ChanceOfPingPong) > Random.Range(0, 100)) { PingPong = true; } else { PingPong = false; }
+                    CurrentHoopSizeMinMax = Level2HoopSizeMinMax;
+                    AssignSpawnPointsToList(Level2HoopLocationIndexes);
+                    break;
+                case 3:
+                    CurrentMaxHoopsInScene = Level3MaxHoops;
+                    CurrentHoopMaxLifetime = Level3HoopLifeTime;
+                    CurrentHoopSpawnDelay = Level3HoopSpawnDelay;
+                    CurrentHoopVelocityMinMax = Level3HoopvelocityMinMax;
+                    CurrentDirection = Level3Direction;
+                    if (Random.Range(0, Level3ChanceOfPingPong) > Random.Range(0, 100)) { PingPong = true; } else { PingPong = false; }
+                    CurrentHoopSizeMinMax = Level3HoopSizeMinMax;
+                    AssignSpawnPointsToList(Level3HoopLocationIndexes);
+                    break;
+                case 4:
+                    CurrentMaxHoopsInScene = Level4MaxHoops;
+                    CurrentHoopMaxLifetime = Level4HoopLifeTime;
+                    CurrentHoopSpawnDelay = Level4HoopSpawnDelay;
+                    CurrentHoopVelocityMinMax = Level4HoopvelocityMinMax;
+                    CurrentDirection = Level4Direction;
+                    if (Random.Range(0, Level4ChanceOfPingPong) > Random.Range(0, 100)) { PingPong = true; } else { PingPong = false; }
+                    CurrentHoopSizeMinMax = Level4HoopSizeMinMax;
+                    AssignSpawnPointsToList(Level4HoopLocationIndexes);
+                    break;
+            }          
         }
     }
 
-
-    void HoopSizeAndSpeed(GameObject a, int b) //this decides the hoop prefabs velocity and size depending on what lane it will spawn in
+    int ChooseDirection(Direction a, float b)
     {
-        HoopDisapear DisappearScript = a.GetComponentInChildren<HoopDisapear>();
-        HoopMovement MovementScript = a.GetComponentInChildren<HoopMovement>();
-        if (DisappearScript == null) { print("null"); }
-        switch (b)
+        int i = (int)a;
+        switch (i)
         {
-            case 0: //lane 1 
-                MovementScript.HoopSize = 0.5f;
-                MovementScript.pingPong = true;
+            case 0:
+                b *= -1;
+                print("antclockwise");
+                AntiClockwise = false;
                 break;
-            case 1: //lane 2
-                MovementScript.HoopSize = 0.8f;
-                MovementScript.pingPong = false;
+            case 1:
+                b *= 1;
+                AntiClockwise = true;
                 break;
-            case 2: //lane 3
-                MovementScript.HoopSize = 1;
-                MovementScript.pingPong = false;
+            case 2:
+                if (AntiClockwise) { b *= -1; AntiClockwise = false; } else { b *= 1; AntiClockwise = true; }
                 break;
-            case 3: //lane 4
-                MovementScript.HoopSize = 1;
-                MovementScript.pingPong = false;
-                break;
-            case 4: //lane 5
-                MovementScript.HoopSize = 1;
-                MovementScript.pingPong = false;
-                break;
-            case 5: //lane 6
-                MovementScript.HoopSize = 1;
-                MovementScript.pingPong = false;
-                break;
-            case 6: //lane 1
-                MovementScript.HoopSize = 0.5f;
-                MovementScript.pingPong = true;
-                break;
-            case 7: //lane 2
-                MovementScript.HoopSize = 0.8f;
-                MovementScript.pingPong = false;
-                break;
-            case 8: //lane 3
-                MovementScript.HoopSize = 1;
-                MovementScript.pingPong = false;
-                break;
-            case 9: //lane 4
-                MovementScript.HoopSize = 1;
-                MovementScript.pingPong = false;
-                break;
-            case 10:   //lane 5
-                MovementScript.HoopSize = 1;
-                MovementScript.pingPong = false;
-                break;
-            case 11:    //lane 6
-                MovementScript.HoopSize = 1;
-                MovementScript.pingPong = false;
-                break;
+        }
+        return Mathf.RoundToInt(b);
+    }
 
+    void AssignSpawnPointsToList(bool[] a)
+    {
+        CurrentSpawnLocationIndexes.Clear();
+        for (int i = 0; i < a.Length-1; i++)
+        {
+            if (a[i] == true) { CurrentSpawnLocationIndexes.Add(i); }
         }
     }
 
     public void TimerReset(GameObject a)    //gets called in the "hoop disapear" script. resets timer to 0 and checks if it was a combo  
     {
-        if (timer < comboTime && !FirstHoop) { Combo(); timer = 0; a.SetActive(true); }
+        if (timer < ComboTimeLimit && !FirstHoop) { Combo(); timer = 0; a.SetActive(true); }
         else { timer = 0; FirstHoop = false; }
     }
 
@@ -183,33 +241,4 @@ public class HoopManager : MonoBehaviour
     }
 
  
-    //these are all the int()s will be an idex in spawn transforms[] that is used to detirmine the hoops transform position in its spawn loop
-    int Level1Spawn()   //lvl 1 is meant to be more uniform and the rings will all spawn in the same "lane" in front and behind the player 
-    {
-        int a;
-        if (HoopSpawnLocationIndex ==1) { a = 7;}
-        else { a = 1;  }
-        return a;
-    }
-    int Level2Spawn(int i)   //lvl 2 the rings will still spawn in the same one lane 
-    {
-        int a;
-        if (HoopSpawnLocationIndex == 1) { a = 7; }
-        else { a = 1; }
-        return a;   
-    }
-    int Level3Spawn(int i) //lvl 3 the rings will spawn between lanes 0-3 in front and behind 
-    {
-        int a;
-        if (Random.value < .5) { a = Random.Range(0, 3); }     //50% chance of in front or behind
-        else { a = Random.Range(6, 9); }  //choosing a random spot in the array
-        return a;
-    }
-    int Level4Spawn(int i) //level 4 rings can spawn in any lane
-    {
-        int a;
-        if (Random.value < .5) { a = Random.Range(0, 5); }     //50% chance of in front or behind
-        else { a = Random.Range(0, 11); } //choosing a random spot in the array
-        return a;
-    } 
 }

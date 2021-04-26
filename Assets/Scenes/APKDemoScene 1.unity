@@ -393,7 +393,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 37869638}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1905,7 +1905,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 172935517}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -9763,7 +9763,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 918024810}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -14366,7 +14366,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1346904426}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -17679,31 +17679,44 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HoopPrefab: {fileID: 436948466856891039, guid: 1c82757d7f63375489d5f7de23b30714,
     type: 3}
-  CurrentHoop: {fileID: 0}
-  MaxHoopsInScene: 10
-  HoopsInScene: 0
   FrontHoopSpawn: {fileID: 629366891}
   BackHoopSpawn: {fileID: 1432332972}
-  HoopSpawnLocations:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  HoopSpawnLocationIndex: 0
-  LastHoopLocationRef: 0
-  HoopSpawnDelay: 1
-  timer: 0
-  comboTime: 1
-  FirstHoop: 1
-  finishLoop: 0
+  ComboTimeLimit: 0
+  CurrentAmountHoops: 0
+  Level1Direction: 2
+  Level1MaxHoops: 12
+  Level1HoopLifeTime: 8
+  Level1HoopSpawnDelay: 1
+  Level1HoopvelocityMinMax: {x: 10, y: 20}
+  Level1ChanceOfPingPong: 0
+  Level1HoopSizeMinMax: {x: 1, y: 2}
+  Level1HoopLocationIndexes: 010101000000000000000000
+  Level2Direction: 0
+  Level2MaxHoops: 0
+  Level2HoopLifeTime: 0
+  Level2HoopSpawnDelay: 0
+  Level2HoopvelocityMinMax: {x: 0, y: 0}
+  Level2ChanceOfPingPong: 0
+  Level2HoopSizeMinMax: {x: 0, y: 0}
+  Level2HoopLocationIndexes: 000000000000000000000000
+  Level3Direction: 0
+  Level3MaxHoops: 0
+  Level3HoopLifeTime: 0
+  Level3HoopSpawnDelay: 0
+  Level3HoopvelocityMinMax: {x: 0, y: 0}
+  Level3ChanceOfPingPong: 0
+  Level3HoopSizeMinMax: {x: 0, y: 0}
+  Level3HoopLocationIndexes: 000000000000000000000000
+  Level4Direction: 0
+  Level4MaxHoops: 0
+  Level4HoopLifeTime: 0
+  Level4HoopSpawnDelay: 0
+  Level4HoopvelocityMinMax: {x: 0, y: 0}
+  Level4ChanceOfPingPong: 0
+  Level4HoopSizeMinMax: {x: 0, y: 0}
+  Level4HoopLocationIndexes: 000000000000000000000000
+  CurrentSpawnLocationIndexes: 
+  CurrentHoopVelocity: 0
 --- !u!1 &1717942669
 GameObject:
   m_ObjectHideFlags: 0
@@ -19210,7 +19223,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1884885987}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -19287,7 +19300,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1904897737}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1

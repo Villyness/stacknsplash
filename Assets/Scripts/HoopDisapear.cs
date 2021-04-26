@@ -41,21 +41,17 @@ public class HoopDisapear : MonoBehaviour
     {
         if (disapear)
         {
-            HoopDestroyed(DoOnlyOnce);
-            //evaluate += 0.1f;
-            //evaluate = Mathf.Clamp(evaluate, 1f, 0f);
-            //Shrink = curve.Evaluate(evaluate);
-            //transform.eulerAngles += new Vector3(10, 0, 0);
+            HoopDestroyed(DoOnlyOnce);       
             ScaleDown(smallenough);
             if (transform.localScale.x < 0.3) { smallenough = true; StartCoroutine(XplosionTrigger.PartyExplosion()); print("getting small"); }
+            
         }
-   
-
     }
 
     void Expire(bool a)
     {
-        if (!a) { HoopManager.Instance.HoopsInScene--; if (GameManager.Instance.HiddenGameScore > 0) GameManager.Instance.HiddenGameScore-=2; }
+        print("expire");
+        if (!a) { HoopManager.Instance.CurrentAmountHoops--; if (GameManager.Instance.HiddenGameScore > 0) GameManager.Instance.HiddenGameScore-=2; }
         GameManager.Instance.UpdateLevel();
         expired = true;
         evaluate += 0.1f;
@@ -74,7 +70,7 @@ public class HoopDisapear : MonoBehaviour
             GameManager.Instance.HiddenGameScore += 5;
             GameManager.Instance.UpdateLevel();
             HoopManager.Instance.TimerReset(ComboText);
-            HoopManager.Instance.HoopsInScene--;
+            HoopManager.Instance.CurrentAmountHoops--;
             GetComponent<AudioSource>().clip = ChimePlayer.clip;
             GetComponent<AudioSource>().Play();
             this.DoOnlyOnce = true;
