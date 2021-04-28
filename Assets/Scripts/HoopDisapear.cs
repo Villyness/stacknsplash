@@ -33,8 +33,9 @@ public class HoopDisapear : MonoBehaviour
     private void Update()
     {
         Lifetime += Time.deltaTime;
-        ExpireMaterial.color = Color.Lerp(StartColour, EndColour, Lifetime/10);
+        ExpireMaterial.color = Color.Lerp(StartColour, EndColour, Lifetime/MaxLifetime);
         if (Lifetime > MaxLifetime) Expire(expired);
+     //  if (HoopManager.Instance.NewLevel) { disapear = true; }
     }
 
     private void FixedUpdate()
@@ -43,15 +44,13 @@ public class HoopDisapear : MonoBehaviour
         {
             HoopDestroyed(DoOnlyOnce);       
             ScaleDown(smallenough);
-            if (transform.localScale.x < 0.3) { smallenough = true; StartCoroutine(XplosionTrigger.PartyExplosion()); print("getting small"); }
-            
+            if (transform.localScale.x < 0.3) { smallenough = true; StartCoroutine(XplosionTrigger.PartyExplosion()); print("getting small"); }           
         }
     }
 
     void Expire(bool a)
     {
-        print("expire");
-        if (!a) { HoopManager.Instance.CurrentAmountHoops--; if (GameManager.Instance.HiddenGameScore > 0) GameManager.Instance.HiddenGameScore-=2; }
+        if (!a) { HoopManager.Instance.CurrentAmountHoops--; if (GameManager.Instance.HiddenGameScore > 0) { GameManager.Instance.SubtractGameSCore(); } }
         GameManager.Instance.UpdateLevel();
         expired = true;
         evaluate += 0.1f;
@@ -67,7 +66,7 @@ public class HoopDisapear : MonoBehaviour
         if (a == false)
         {
             GameManager.Instance.GameScore+=5;
-            GameManager.Instance.HiddenGameScore += 5;
+           if (GameManager.Instance.HiddenGameScore <= (GameManager.Instance.LevelFiveScore + 40)) GameManager.Instance.HiddenGameScore += 5;
             GameManager.Instance.UpdateLevel();
             HoopManager.Instance.TimerReset(ComboText);
             HoopManager.Instance.CurrentAmountHoops--;

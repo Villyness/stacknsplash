@@ -34,7 +34,7 @@ public class ShapeSpawner : MonoBehaviour
     { 
        //the apple and the bannana needed different rotations for the gun
       if (Apple) FruitInHand = Instantiate(g, transform.position + (transform.forward/8), transform.rotation * Quaternion.Euler(90, 180,0)); 
-      else FruitInHand = Instantiate(g, transform.position + (transform.forward/8), transform.rotation * Quaternion.Euler(145, 180,0));
+      else FruitInHand = Instantiate(g, transform.position + (transform.forward/6), transform.rotation * Quaternion.Euler(145, 180,0));
         IC.ChildObject(FruitInHand); //this is childing the object to the hand and turning offf physics
     }
 

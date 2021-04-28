@@ -38,13 +38,13 @@ public class HoopManager : MonoBehaviour
     [Header("Hoop Level Progression")]
     [Header("Spawn Locations are numbered from 0-5 in Front," +
         " and  6-11 Behind")]
-    public int CurrentAmountHoops;    //current amount of hoops in scene
+    public int CurrentAmountHoops;    //current amount of hoops in scene (should be read only in inspector)
     [Space(1)]
     [Header("Level 1")]
     public Direction Level1Direction;
     public int Level1MaxHoops;
     public int Level1HoopLifeTime;
-    public int Level1HoopSpawnDelay;
+    public float Level1HoopSpawnDelay;
     public Vector2 Level1HoopvelocityMinMax;
     public int Level1ChanceOfPingPong;
     public Vector2 Level1HoopSizeMinMax;
@@ -53,7 +53,7 @@ public class HoopManager : MonoBehaviour
     public Direction Level2Direction;
     public int Level2MaxHoops;
     public int Level2HoopLifeTime;
-    public int Level2HoopSpawnDelay;
+    public float Level2HoopSpawnDelay;
     public Vector2 Level2HoopvelocityMinMax;
     public int Level2ChanceOfPingPong;
     public Vector2 Level2HoopSizeMinMax;
@@ -62,7 +62,7 @@ public class HoopManager : MonoBehaviour
     public Direction Level3Direction;
     public int Level3MaxHoops;
     public int Level3HoopLifeTime;
-    public int Level3HoopSpawnDelay;
+    public float Level3HoopSpawnDelay;
     public Vector2 Level3HoopvelocityMinMax;
     public int Level3ChanceOfPingPong;
     public Vector2 Level3HoopSizeMinMax;
@@ -71,34 +71,51 @@ public class HoopManager : MonoBehaviour
     public Direction Level4Direction;
     public int Level4MaxHoops;
     public int Level4HoopLifeTime;
-    public int Level4HoopSpawnDelay;
+    public float Level4HoopSpawnDelay;
     public Vector2 Level4HoopvelocityMinMax;
     public int Level4ChanceOfPingPong;
     public Vector2 Level4HoopSizeMinMax;
     public bool[] Level4HoopLocationIndexes = new bool[12];
+    [Header("Level 5")]
+    public Direction Level5Direction;
+    public int Level5MaxHoops;
+    public int Level5HoopLifeTime;
+    public float Level5HoopSpawnDelay;
+    public Vector2 Level5HoopvelocityMinMax;
+    public int Level5ChanceOfPingPong;
+    public Vector2 Level5HoopSizeMinMax;
+    public bool[] Level5HoopLocationIndexes = new bool[12];
 
-   // List<Transform> HoopSpawnLocations ;
-   Transform[] HoopSpawnLocations = new Transform[12];  //array of hoop Spawn locations
+
+    Transform[] HoopSpawnLocations = new Transform[12];  //array of hoop Spawn locations
     float timer; //a timer that resets whenever a player shoots a hoop
     bool FirstHoop = true;   //this is a check so the player doesnt get a combo on their first ring
     bool finishLoop; //this is just to restart the hoop spawn loop if it finishes (without restarting it a bunch of times per second)
 
-    //All the variables below are changed everytime the level is updated. These variables determine the spawn delay, size, location, and velocity of each hoop in the for loop
+    //All the variables below are updated everytime the level is changed and some are updated with each hoop in the spawn loop. 
+    //These variables determine the spawn delay, size, location, and velocity of each hoop in the for loop after being set from public variables in the inspector relevent to the level.
     public List<int> CurrentSpawnLocationIndexes;
     int CurrentLocationIndex = 0; //a reference to a position in the spawn location array from the last loop. this is just to avoid hoops spawning in the same spot twice
     GameObject CurrentHoop;
     int CurrentHoopSpawnLocationIndex;  //this gets updated in a switch statement checking what level we're on and is used when setting the position of a new hoop in the for loop
-    float CurrentHoopSpawnDelay; //amount in seconds the loop has to wait every cycle. can be used to space out how far apart the hoops will be
+    int LastHoopSpawnLocationIndex;  //this gets updated in a switch statement checking what level we're on and is used when setting the position of a new hoop in the for loop
+    public float CurrentHoopSpawnDelay; //amount in seconds the loop has to wait every cycle. can be used to space out how far apart the hoops will be
     int CurrentMaxHoopsInScene; //max amount of hoops in scene, if there is less that max, another hoop will spawn     
     int CurrentHoopMaxLifetime;
     Vector2 CurrentHoopVelocityMinMax;
-    public float CurrentHoopVelocity;
-    Vector2 CurrentHoopSizeMinMax;//this needs to be read only in the inspector 
+    public float CurrentHoopVelocity; //should be read only in inspector
+    Vector2 CurrentHoopSizeMinMax;
     float CurrentHoopSize;
-    bool PingPong;
+    bool PingPong = false;
     bool AntiClockwise;
     Direction CurrentDirection;
+    bool NewLevel = false;
+    bool DoOnlyOnce = true;
+    public int iChecker;
+    public int iterations;
 
+    bool ComboCheck;
+    public int ComboCount;
     private void Start()
     {
         //in front of player 
@@ -121,35 +138,49 @@ public class HoopManager : MonoBehaviour
     private void Update()
     {
         timer += Time.deltaTime;
-        if (finishLoop) { StartCoroutine(InstantiateHoops()); }     //just making sure the hoop spawn loop is running
+        if (finishLoop) { finishLoop = false; StartCoroutine(InstantiateHoops()); }     //just making sure the hoop spawn loop is running
     }
 
     IEnumerator InstantiateHoops()
     {
+        print("Instantiate Hoops");
+
         //this loop is instantiating a hoop prefab and setting its values that are influenced by the NewHoopLevel() below and the Game level
-        for (int i = CurrentAmountHoops; i < CurrentMaxHoopsInScene; i++)
-        {            
-            //note the "CurrentHoopSpawnLocationIndex" = the value of the element that is randomly picked from the CurrentSpawnLocationIndexes<> list and and not the indexes in the Random.Range() method
-            CurrentHoopSpawnLocationIndex = CurrentSpawnLocationIndexes[Random.Range(0, CurrentSpawnLocationIndexes.Count)];
-            CurrentHoop = Instantiate(HoopPrefab, HoopSpawnLocations[CurrentHoopSpawnLocationIndex].position, Quaternion.Euler(90, 0, 0)); //add dot product check here to fix combo backwards
-            HoopMovement HM = CurrentHoop.GetComponentInChildren<HoopMovement>();
-            HoopDisapear HD = CurrentHoop.GetComponentInChildren<HoopDisapear>();
-            CurrentHoopSize = Random.Range(CurrentHoopSizeMinMax.x,CurrentHoopSizeMinMax.y); //Randomly selecting from the current min or max this hoop could spawn
-            if (CurrentLocationIndex != 0 && CurrentLocationIndex != 6) { HM.HoopSize = CurrentHoopSize; } else { HM.HoopSize = 0.5f; }
-            CurrentHoopVelocity = Random.Range(CurrentHoopVelocityMinMax.x, CurrentHoopVelocityMinMax.y);            
-            HM.HoopVelocity = ChooseDirection(CurrentDirection, CurrentHoopVelocity);
-            HM.pingPong = PingPong;
-            HD.MaxLifetime = CurrentHoopMaxLifetime;
-            CurrentAmountHoops++;
-            CurrentLocationIndex = i;
-            i = CurrentAmountHoops;
-            yield return new WaitForSeconds(CurrentHoopSpawnDelay);
+        if (CurrentAmountHoops < CurrentMaxHoopsInScene)
+        {
+            for (int i = 0; i < CurrentMaxHoopsInScene; i++)
+            {
+                iterations++;
+                //note the "CurrentHoopSpawnLocationIndex" = the value of the element that is randomly picked from the CurrentSpawnLocationIndexes<> list and and not the indexes in the Random.Range() method
+                CurrentHoopSpawnLocationIndex = AlternateSpawn(CurrentHoopSpawnLocationIndex);
+                if (CurrentHoopSpawnLocationIndex < 6) {CurrentHoop = Instantiate(HoopPrefab, HoopSpawnLocations[CurrentHoopSpawnLocationIndex].position, Quaternion.Euler(90, 0, 0)); } //add dot product check here to fix combo backwards
+                else { CurrentHoop = Instantiate(HoopPrefab, HoopSpawnLocations[CurrentHoopSpawnLocationIndex].position, Quaternion.Euler(90, 180, 0)); } //add dot product check here to fix combo backwards}
+                    HoopMovement HM = CurrentHoop.GetComponentInChildren<HoopMovement>();
+                HoopDisapear HD = CurrentHoop.GetComponentInChildren<HoopDisapear>();
+                CurrentHoopSize = Random.Range(CurrentHoopSizeMinMax.x, CurrentHoopSizeMinMax.y); //Randomly selecting from the current min or max this hoop could spawn          
+                CurrentHoopVelocity = Random.Range(CurrentHoopVelocityMinMax.x, CurrentHoopVelocityMinMax.y);
+                if (CurrentHoopSpawnLocationIndex != 0 && CurrentHoopSpawnLocationIndex != 6) { HM.HoopSize = CurrentHoopSize;  } else { HM.HoopSize = 0.5f; CurrentHoopVelocity = 13; }
+                HM.HoopVelocity = ChooseDirection(CurrentDirection, CurrentHoopVelocity);
+               
+                HM.pingPong = PingPong;
+                HD.MaxLifetime = CurrentHoopMaxLifetime;
+                CurrentAmountHoops++;
+                CurrentLocationIndex = i;
+                LastHoopSpawnLocationIndex = CurrentHoopSpawnLocationIndex;
+                // i = CurrentAmountHoops;
+                iChecker = i;
+                // if (NewLevel && !FirstHoop) { NewLevel = false; break;  }
+                yield return new WaitForSeconds(CurrentHoopSpawnDelay);
+            }
         }
+        iterations = 0;
+        print("finishSpawnLoop");
         finishLoop = true;
     }
 
     public void NewHoopLevel(bool a) //this gets called once in the game manager everytime the hidden score goes over or under a trigger for level change
     {
+        NewLevel = true;
         if (a)
         {
             a = false;
@@ -161,7 +192,7 @@ public class HoopManager : MonoBehaviour
                     CurrentHoopSpawnDelay = Level1HoopSpawnDelay;
                     CurrentHoopVelocityMinMax = Level1HoopvelocityMinMax;
                     CurrentDirection = Level1Direction;
-                    if (Random.Range(0, Level1ChanceOfPingPong) > Random.Range(0, 100)) { PingPong = true; } else { PingPong = false; }
+                    if (Level1ChanceOfPingPong >= Random.Range(0, 100)) { PingPong = true; } else { PingPong = false; }
                     CurrentHoopSizeMinMax = Level1HoopSizeMinMax;
                     AssignSpawnPointsToList(Level1HoopLocationIndexes);
                     break;
@@ -171,7 +202,7 @@ public class HoopManager : MonoBehaviour
                     CurrentHoopSpawnDelay = Level2HoopSpawnDelay;
                     CurrentHoopVelocityMinMax = Level2HoopvelocityMinMax;
                     CurrentDirection = Level2Direction;
-                    if (Random.Range(0, Level2ChanceOfPingPong) > Random.Range(0, 100)) { PingPong = true; } else { PingPong = false; }
+                    if (Level2ChanceOfPingPong >= Random.Range(0, 100)) { PingPong = true; } else { PingPong = false; }
                     CurrentHoopSizeMinMax = Level2HoopSizeMinMax;
                     AssignSpawnPointsToList(Level2HoopLocationIndexes);
                     break;
@@ -181,7 +212,7 @@ public class HoopManager : MonoBehaviour
                     CurrentHoopSpawnDelay = Level3HoopSpawnDelay;
                     CurrentHoopVelocityMinMax = Level3HoopvelocityMinMax;
                     CurrentDirection = Level3Direction;
-                    if (Random.Range(0, Level3ChanceOfPingPong) > Random.Range(0, 100)) { PingPong = true; } else { PingPong = false; }
+                    if (Level3ChanceOfPingPong >= Random.Range(0, 100)) { PingPong = true; } else { PingPong = false; }
                     CurrentHoopSizeMinMax = Level3HoopSizeMinMax;
                     AssignSpawnPointsToList(Level3HoopLocationIndexes);
                     break;
@@ -191,15 +222,31 @@ public class HoopManager : MonoBehaviour
                     CurrentHoopSpawnDelay = Level4HoopSpawnDelay;
                     CurrentHoopVelocityMinMax = Level4HoopvelocityMinMax;
                     CurrentDirection = Level4Direction;
-                    if (Random.Range(0, Level4ChanceOfPingPong) > Random.Range(0, 100)) { PingPong = true; } else { PingPong = false; }
+                    if ( Level4ChanceOfPingPong >= Random.Range(0, 100)) { PingPong = true; } else { PingPong = false; }
                     CurrentHoopSizeMinMax = Level4HoopSizeMinMax;
                     AssignSpawnPointsToList(Level4HoopLocationIndexes);
+                    break;
+                case 5:
+                    CurrentMaxHoopsInScene = Level5MaxHoops;
+                    CurrentHoopMaxLifetime = Level5HoopLifeTime;
+                    CurrentHoopSpawnDelay = Level5HoopSpawnDelay;
+                    CurrentHoopVelocityMinMax = Level5HoopvelocityMinMax;
+                    CurrentDirection = Level5Direction;
+                    if (Level5ChanceOfPingPong >= Random.Range(0, 100)) { PingPong = true; } else { PingPong = false; }
+                    CurrentHoopSizeMinMax = Level5HoopSizeMinMax;
+                    AssignSpawnPointsToList(Level5HoopLocationIndexes);
                     break;
             }          
         }
     }
-
-    int ChooseDirection(Direction a, float b)
+    //gets called in the for loop in InstantiateHoops() after CurrentHoopVelocity has been set
+    public int AlternateSpawn(int a)//this is just to make it so hoops dont spawn in the same spot twice in a row 
+    {
+        a = CurrentSpawnLocationIndexes[Random.Range(0, CurrentSpawnLocationIndexes.Count)];
+        if (CurrentSpawnLocationIndexes.Count > 1) { while (a == LastHoopSpawnLocationIndex) { a = CurrentSpawnLocationIndexes[Random.Range(0, CurrentSpawnLocationIndexes.Count)]; } }
+        return a;
+    }
+    int ChooseDirection(Direction a, float b)   //gets the chosen direction from the inspector and changes the players velocity
     {
         int i = (int)a;
         switch (i)
@@ -219,8 +266,8 @@ public class HoopManager : MonoBehaviour
         }
         return Mathf.RoundToInt(b);
     }
-
-    void AssignSpawnPointsToList(bool[] a)
+    //gets called in NewLevel()
+    void AssignSpawnPointsToList(bool[] a)  //gets the spawn points chosen for the level in the inspector and adds them to a list
     {
         CurrentSpawnLocationIndexes.Clear();
         for (int i = 0; i < a.Length-1; i++)
@@ -231,13 +278,19 @@ public class HoopManager : MonoBehaviour
 
     public void TimerReset(GameObject a)    //gets called in the "hoop disapear" script. resets timer to 0 and checks if it was a combo  
     {
-        if (timer < ComboTimeLimit && !FirstHoop) { Combo(); timer = 0; a.SetActive(true); }
-        else { timer = 0; FirstHoop = false; }
+        if (timer < ComboTimeLimit && !FirstHoop)
+        {
+          if (ComboCheck) { ComboCount++; }
+          Combo();
+          timer = 0;
+          a.SetActive(true);
+        }
+        else { timer = 0; FirstHoop = false; ComboCount = 1; }
     }
 
     void Combo()    //combo stuff
     {
-        GameManager.Instance.GameScore += 5;
+        GameManager.Instance.GameScore += (5* ComboCount);
     }
 
  
