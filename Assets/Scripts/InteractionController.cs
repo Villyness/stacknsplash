@@ -32,11 +32,12 @@ public class InteractionController : MonoBehaviour
     public float MiddleValue;
 
     public bool TriggerDown;
+    public bool IsLeftIC;
 
     public bool Aiming;
     bool release;
     public bool PointingAtBarrel;
-    RaycastHit hit;
+    //RaycastHit hit;
 
     public GameObject InFrontOfController;
 
@@ -47,7 +48,15 @@ public class InteractionController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       AudioS = GetComponent<AudioSource>();  //the sound the gun will make when firing 
+        AudioS = GetComponent<AudioSource>();  //the sound the gun will make when firing 
+        if (IsLeftIC)
+        {
+            FindObjectOfType<LeftButtonController>().LeftButtonPressed += ButtonSwitch;
+        }
+        else
+        {
+            FindObjectOfType<RightButtonController>().RightButtonPressed += ButtonSwitch;
+        }
     }
 
 
@@ -104,6 +113,9 @@ public class InteractionController : MonoBehaviour
      
     }
 
-
+    private void ButtonSwitch(bool on)
+    {
+        TriggerDown = on;
+    }
 
 }
