@@ -18113,7 +18113,7 @@ MonoBehaviour:
     type: 3}
   FrontHoopSpawn: {fileID: 629366891}
   BackHoopSpawn: {fileID: 1432332972}
-  ComboTimeLimit: 1
+  ComboTimeLimit: 0.5
   CurrentAmountHoops: 0
   Level1Direction: 1
   Level1MaxHoops: 1
@@ -18124,7 +18124,7 @@ MonoBehaviour:
   Level1HoopSizeMinMax: {x: 1, y: 1}
   Level1HoopLocationIndexes: 000101010101000000000000
   Level2Direction: 2
-  Level2MaxHoops: 10
+  Level2MaxHoops: 1
   Level2HoopLifeTime: 5
   Level2HoopSpawnDelay: 1.5
   Level2HoopvelocityMinMax: {x: 10, y: 10}
@@ -18160,6 +18160,7 @@ MonoBehaviour:
   CurrentHoopVelocity: 0
   iChecker: 0
   iterations: 0
+  ComboCount: 0
 --- !u!1 &1717942669
 GameObject:
   m_ObjectHideFlags: 0

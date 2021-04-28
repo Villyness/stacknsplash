@@ -31,7 +31,7 @@ public class HoopManager : MonoBehaviour
     [Space(10)]
 
     [Header("Combo")]
-    public int ComboTimeLimit;   //if the player shoots a hoop while timer <= comboTime then they get a combo
+    public float ComboTimeLimit;   //if the player shoots a hoop while timer <= comboTime then they get a combo
     public enum Direction { AntiClockwise, Clockwise, Alternate}
     [Space(10)]
 
@@ -285,12 +285,13 @@ public class HoopManager : MonoBehaviour
           timer = 0;
           a.SetActive(true);
         }
-        else { timer = 0; FirstHoop = false; ComboCount = 1; }
+        else { timer = 0; FirstHoop = false; ComboCount = 1; ComboCheck = false; }
     }
 
     void Combo()    //combo stuff
     {
         GameManager.Instance.GameScore += (5* ComboCount);
+        ComboCheck = true;
     }
 
  
