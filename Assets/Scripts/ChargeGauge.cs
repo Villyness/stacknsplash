@@ -14,8 +14,8 @@ public class ChargeGauge : MonoBehaviour
     private InteractionController refValue;
 
     public GameObject[] gaugeSections;
-    private float middleThreshold;
-    private float upperThreshold;
+    /*private float middleThreshold;
+    private float upperThreshold;*/
     //some inefficient stuff to put in functionality for now
     //private float gaugeMax;
     // Start is called before the first frame update

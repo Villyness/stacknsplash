@@ -15910,6 +15910,11 @@ PrefabInstance:
       propertyPath: MaxReleaseForce
       value: 2000
       objectReference: {fileID: 0}
+    - target: {fileID: 4466952347785913672, guid: 7065fc029ed5195478e2b2d3462ccd07,
+        type: 3}
+      propertyPath: IsLeftIC
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 746106305, guid: 7065fc029ed5195478e2b2d3462ccd07, type: 3}
       propertyPath: SingleFruitPrefab
       value: 
@@ -16008,27 +16013,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7065fc029ed5195478e2b2d3462ccd07, type: 3}
---- !u!1 &1546807550 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1255068279, guid: 7065fc029ed5195478e2b2d3462ccd07,
-    type: 3}
-  m_PrefabInstance: {fileID: 1546807549}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1546807551
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1546807550}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01758625ccf24c744bfacd67ee076b49, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  HandAnchor: {fileID: 1326231593}
-  IsRightController: 0
-  gaugeSections: []
 --- !u!1 &1546807552 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6123911323750773094, guid: 7065fc029ed5195478e2b2d3462ccd07,
@@ -17842,7 +17826,7 @@ MonoBehaviour:
     type: 3}
   FrontHoopSpawn: {fileID: 629366891}
   BackHoopSpawn: {fileID: 1432332972}
-  ComboTimeLimit: 0.5
+  ComboTimeLimit: 0
   CurrentAmountHoops: 0
   Level1Direction: 1
   Level1MaxHoops: 1
